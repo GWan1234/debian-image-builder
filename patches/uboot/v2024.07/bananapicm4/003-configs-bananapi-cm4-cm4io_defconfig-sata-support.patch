@@ -1,11 +1,11 @@
 From bdf6fe2c9236ff49284eaf54defa78c547fa43b9 Mon Sep 17 00:00:00 2001
-From: Patrick Yavitz <pyavitz@xxxxx.com>
+From: Patrick Yavitz <pyavitz@gmail.com>
 Date: Tue, 30 Jan 2024 06:10:07 -0500
 Subject: [PATCH] configs: bananapi-cm4-cm4io_defconfig: sata support
 
 Enable SATA BOOT SUPPORT.
 
-Signed-off-by: Patrick Yavitz <pyavitz@xxxxx.com>
+Signed-off-by: Patrick Yavitz <pyavitz@gmail.com>
 ---
  configs/bananapi-cm4-cm4io_defconfig | 8 ++++++++
  1 file changed, 8 insertions(+)

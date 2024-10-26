@@ -1,11 +1,11 @@
 From 22961f0d6f59d0d87a43eadf2a175ad43174f0d8 Mon Sep 17 00:00:00 2001
-From: Patrick Yavitz <pyavitz@xxxxx.com>
+From: Patrick Yavitz <pyavitz@gmail.com>
 Date: Tue, 30 Jan 2024 06:07:02 -0500
 Subject: [PATCH] configs: bananapi-cm4-cm4io_defconfig: preboot and boot logo
 
 Enable PREBOOT and BOOT LOGO SUPPORT.
 
-Signed-off-by: Patrick Yavitz <pyavitz@xxxxx.com>
+Signed-off-by: Patrick Yavitz <pyavitz@gmail.com>
 ---
  configs/bananapi-cm4-cm4io_defconfig | 6 +-----
  1 file changed, 1 insertion(+), 5 deletions(-)

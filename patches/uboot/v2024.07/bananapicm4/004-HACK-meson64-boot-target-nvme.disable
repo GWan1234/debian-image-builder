@@ -1,9 +1,9 @@
 From 293427d2bc690ec4a656e57f0d6d8c8c68db14aa Mon Sep 17 00:00:00 2001
-From: Patrick Yavitz <pyavitz@xxxxx.com>
+From: Patrick Yavitz <pyavitz@gmail.com>
 Date: Tue, 30 Jan 2024 06:11:13 -0500
 Subject: [PATCH] HACK: meson64 boot target nvme
 
-Signed-off-by: Patrick Yavitz <pyavitz@xxxxx.com>
+Signed-off-by: Patrick Yavitz <pyavitz@gmail.com>
 ---
  include/configs/meson64.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)

@@ -1,11 +1,11 @@
 From 9e4305436135989881f289800bef31fd3d689fc4 Mon Sep 17 00:00:00 2001
-From: Patrick Yavitz <pyavitz@xxxxx.com>
+From: Patrick Yavitz <pyavitz@gmail.com>
 Date: Tue, 30 Jan 2024 06:06:27 -0500
 Subject: [PATCH] configs: bananapi-cm4-cm4io_defconfig: nvme support
 
 Enable NVME PCI SUPPORT.
 
-Signed-off-by: Patrick Yavitz <pyavitz@xxxxx.com>
+Signed-off-by: Patrick Yavitz <pyavitz@gmail.com>
 ---
  configs/bananapi-cm4-cm4io_defconfig | 2 ++
  1 file changed, 2 insertions(+)
