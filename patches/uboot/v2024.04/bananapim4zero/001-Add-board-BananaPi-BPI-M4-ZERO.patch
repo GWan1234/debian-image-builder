@@ -89,7 +89,7 @@ index 0000000000..76ba077bc6
 +
 +/* Connected to an on-board RTL8821CU USB WiFi chip. */
 +&ehci1 {
-+	status = "okay";
++	status = "disabled";
 +};
 +
 +&ehci3 {
