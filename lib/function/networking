@@ -26,6 +26,13 @@ install -Dm644 UPDATE.mem /lib/firmware/renesas_usb_fw.mem
 rm -f UPDATE.mem
 git clone -q -b realtek https://github.com/pyavitz/firmware.git
 rm -f firmware/README.md; cp -fr firmware/* /lib/firmware; rm -fdr firmware
+if [[ "$FAMILY_EXT" == "ac2xx" ]]; then
+	# AML TV BOXES
+	git clone -q -b h96max-x3 https://github.com/pyavitz/firmware.git
+	rm -f firmware/README.md; cp -fr firmware/* /lib/firmware; rm -fdr firmware
+	git clone -q -b ath10k https://github.com/pyavitz/firmware.git
+	cp -fr firmware/* /lib/firmware; rm -fdr firmware
+fi
 if [[ "$BOARD" =~ ^(bananapim2zero|bananapip2zero|nanopineoplus2)$ ]]; then
 	git clone -q -b nanopi https://github.com/pyavitz/firmware.git
 	rm -f firmware/README.md; cp -fr firmware/* /lib/firmware; rm -fdr firmware
@@ -34,17 +41,9 @@ if [[ "$BOARD" == "cubietruck" ]]; then
 	git clone -q -b cubietruck https://github.com/pyavitz/firmware.git
 	rm -f firmware/README.md; cp -fr firmware/* /lib/firmware; rm -fdr firmware
 fi
-if [[ "$BOARD" == "h96max-x3" ]]; then
-	git clone -q -b h96max-x3 https://github.com/pyavitz/firmware.git
-	rm -f firmware/README.md; cp -fr firmware/* /lib/firmware; rm -fdr firmware
-fi
 if [[ "$BOARD" == "radxazero" ]]; then
 	git clone -q -b radxa https://github.com/pyavitz/firmware.git
 	rm -f firmware/README.md; cp -fr firmware/* /lib/firmware; rm -fdr firmware
-fi
-if [[ "$BOARD" == "x96air" ]]; then
-	git clone -q -b ath10k https://github.com/pyavitz/firmware.git
-	cp -fr firmware/* /lib/firmware; rm -fdr firmware
 fi
 if [[ -f "/lib/firmware/brcm/brcmfmac43430-sdio.bin" ]]; then
 	ln -s /lib/firmware/brcm/brcmfmac43430-sdio.bin /lib/firmware/brcm/brcmfmac43430-sdio.friendlyarm,nanopi-neo-plus2.bin
@@ -118,11 +117,11 @@ if [[ "$BOARD" == "indiedroid-nova" ]]; then
 	rm -fdr rkwifibt
 fi
 cd /lib/firmware
-if [[ -f "/lib/firmware/dvb-fe-xc4000-1.4.1.fw" ]]; then :; else ${ARIA2} https://github.com/armbian/firmware/raw/master/dvb-fe-xc4000-1.4.1.fw; fi
-if [[ -f "/lib/firmware/xc3028-v27.fw" ]]; then :; else ${ARIA2} https://github.com/armbian/firmware/raw/master/xc3028-v27.fw; fi
-if [[ -f "/lib/firmware/xc3028L-v36.fw" ]]; then :; else ${ARIA2} https://github.com/armbian/firmware/raw/master/xc3028L-v36.fw; fi
-if [[ -f "/lib/firmware/xc4000-1.4.fw" ]]; then :; else ${ARIA2} https://github.com/armbian/firmware/raw/master/xc4000-1.4.fw; fi
-if [[ -f "/lib/firmware/dvb-fe-xc4000-1.4.fw" ]]; then :; else ln -s /lib/firmware/xc4000-1.4.fw /lib/firmware/dvb-fe-xc4000-1.4.fw; fi
+if [[ ! -f "/lib/firmware/dvb-fe-xc4000-1.4.1.fw" ]]; then else ${ARIA2} https://github.com/armbian/firmware/raw/master/dvb-fe-xc4000-1.4.1.fw; fi
+if [[ ! -f "/lib/firmware/xc3028-v27.fw" ]]; then ${ARIA2} https://github.com/armbian/firmware/raw/master/xc3028-v27.fw; fi
+if [[ ! -f "/lib/firmware/xc3028L-v36.fw" ]]; then ${ARIA2} https://github.com/armbian/firmware/raw/master/xc3028L-v36.fw; fi
+if [[ ! -f "/lib/firmware/xc4000-1.4.fw" ]]; then ${ARIA2} https://github.com/armbian/firmware/raw/master/xc4000-1.4.fw; fi
+if [[ ! -f "/lib/firmware/dvb-fe-xc4000-1.4.fw" ]]; then ln -s /lib/firmware/xc4000-1.4.fw /lib/firmware/dvb-fe-xc4000-1.4.fw; fi
 cd ~
 if [[ "$BOARD" == "bananapif3" ]]; then bananapif3_vpu_firmware; fi
 echo ""
@@ -136,7 +135,7 @@ if [[ "$DISTRO" == "ubuntu" ]]; then
 	echo 'KERNEL=="regulatory*", ACTION=="change", SUBSYSTEM=="platform", RUN+="/sbin/crda"' > /etc/udev/rules.d/60-regdb.rules
 fi
 git clone https://kernel.googlesource.com/pub/scm/linux/kernel/git/sforshee/wireless-regdb
-sleep 1s
+sleep .50
 cd wireless-regdb
 cp -f regulatory.db /lib/firmware/regulatory.db
 cp -f regulatory.db.p7s /lib/firmware/regulatory.db.p7s
@@ -186,7 +185,7 @@ if [[ "$BOARD" == "nanopir5s" ]]; then
 fi
 }
 
-ifupdown-setup (){
+ifupdown_setup (){
 rm -f /etc/network/interfaces
 if [[ "$DISTRO_VERSION" == "jammy" ]]; then
 	# /etc/network/if-down.d/resolved: 12: mystatedir: not found
@@ -260,7 +259,8 @@ network={
 EOF
 }
 
-networkmanager-setup (){
+networkmanager_setup (){
+mkdir -p /etc/network
 rm -f /etc/network/interfaces
 tee /etc/network/interfaces <<EOF
 source /etc/network/interfaces.d/*
@@ -268,21 +268,15 @@ source /etc/network/interfaces.d/*
 auto lo
 iface lo inet loopback
 EOF
+mkdir -p /etc/wpa_supplicant
 echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev" > /etc/wpa_supplicant/wpa_supplicant.conf
-chown root:root /etc/network/interfaces
-chown root:root /etc/wpa_supplicant/wpa_supplicant.conf
-if [[ -f "/usr/lib/NetworkManager/conf.d/10-globally-managed-devices.conf" ]]; then
-	rm -f /usr/lib/NetworkManager/conf.d/10-globally-managed-devices.conf
-fi
-if [[ -f "/etc/NetworkManager/conf.d/default-wifi-powersave-on.conf" ]]; then
-	sed -i 's/wifi.powersave = 3/wifi.powersave = 2/g' /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf
-else
-	echo "[connection]" > /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf
-	echo "wifi.powersave = 2" >> /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf
-fi
+rm -f /usr/lib/NetworkManager/conf.d/10-globally-managed-devices.conf
+rm -f /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf
+echo "[connection]" > /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf
+echo "wifi.powersave = 2" >> /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf
 }
 
-ifupdown-credentials (){
+ifupdown_credentials (){
 if [[ -f "/root/ifupdown.credentials" ]]; then
 	CURRENT_HOSTNAME=`cat /etc/hostname | sed -n '1p'`
 	mv -f /root/ifupdown.credentials /usr/local/bin/credentials
@@ -308,7 +302,7 @@ if [[ -f "/root/ifupdown.credentials" ]]; then
 fi
 }
 
-networkmanager-credentials (){
+networkmanager_credentials (){
 if [[ -f "/root/networkmanager.credentials" ]]; then
 	CURRENT_HOSTNAME=`cat /etc/hostname | sed -n '1p'`
 	mv -f /root/networkmanager.credentials /usr/local/bin/credentials
