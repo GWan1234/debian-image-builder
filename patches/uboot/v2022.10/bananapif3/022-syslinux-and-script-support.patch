@@ -51,9 +51,9 @@ index 00000000..acb1ef7a
 -- 
 2.39.5
 
-From b1d989383fa66f528985f7ebd4f976ad71adc910 Mon Sep 17 00:00:00 2001
+From 9bb50320cc81251c93a21a94fb73cf0a2feb693e Mon Sep 17 00:00:00 2001
 From: Patrick Yavitz <pyavitz@gmail.com>
-Date: Thu, 10 Oct 2024 10:22:35 -0400
+Date: Mon, 4 Nov 2024 10:09:19 -0500
 Subject: [PATCH] Add syslinux and script support
 
 Signed-off-by: Patrick Yavitz <pyavitz@gmail.com>
@@ -64,12 +64,12 @@ Signed-off-by: Patrick Yavitz <pyavitz@gmail.com>
  3 files changed, 23 insertions(+), 23 deletions(-)
 
 diff --git a/board/spacemit/k1-x/k1x.c b/board/spacemit/k1-x/k1x.c
-index b6f06fbb..2d54f0c4 100644
+index 460eea4f..7f59b332 100644
 --- a/board/spacemit/k1-x/k1x.c
 +++ b/board/spacemit/k1-x/k1x.c
-@@ -324,8 +324,8 @@ void _load_env_from_blk(struct blk_desc *dev_desc, const char *dev_name, int dev
- 	if (part > MAX_SEARCH_PARTITIONS)
- 		return;
+@@ -458,8 +458,8 @@ void _load_env_from_blk(struct blk_desc *dev_desc, const char *dev_name, int dev
+ #endif
+ 	}
  
 -	env_set("bootfs_part", simple_itoa(part));
 -	env_set("bootfs_devname", dev_name);
@@ -78,7 +78,7 @@ index b6f06fbb..2d54f0c4 100644
  
  	/*load env.txt and import to uboot*/
  	memset((void *)CONFIG_SPL_LOAD_FIT_ADDRESS, 0, CONFIG_ENV_SIZE);
-@@ -502,7 +502,7 @@ void setenv_boot_mode(void)
+@@ -662,7 +662,7 @@ void setenv_boot_mode(void)
  	u32 boot_mode = get_boot_mode();
  	switch (boot_mode) {
  	case BOOT_MODE_NAND:
@@ -87,7 +87,7 @@ index b6f06fbb..2d54f0c4 100644
  		break;
  	case BOOT_MODE_NOR:
  		char *blk_name;
-@@ -513,23 +513,23 @@ void setenv_boot_mode(void)
+@@ -673,23 +673,23 @@ void setenv_boot_mode(void)
  			return;
  		}
  
@@ -119,11 +119,11 @@ index b6f06fbb..2d54f0c4 100644
  	}
  }
 diff --git a/configs/k1_defconfig b/configs/k1_defconfig
-index 568400e5..f6202596 100644
+index 8db91b1e..63ac72b5 100644
 --- a/configs/k1_defconfig
 +++ b/configs/k1_defconfig
-@@ -39,6 +39,8 @@ CONFIG_AUTOBOOT_KEYED=y
- CONFIG_AUTOBOOT_STOP_STR="s"
+@@ -43,6 +43,8 @@ CONFIG_AUTOBOOT_STOP_STR=" "
+ CONFIG_AUTOBOOT_KEYED_CTRLC=y
  CONFIG_USE_BOOTCOMMAND=y
  CONFIG_BOOTCOMMAND="bootm 0x11000000"
 +CONFIG_USE_PREBOOT=y
@@ -131,13 +131,13 @@ index 568400e5..f6202596 100644
  CONFIG_LOGLEVEL=7
  CONFIG_SPL_LOGLEVEL=1
  # CONFIG_SYS_DEVICE_NULLDEV is not set
-@@ -275,3 +277,4 @@ CONFIG_PRINT_TIMESTAMP=y
- # CONFIG_SPL_SHA1 is not set
+@@ -288,3 +290,4 @@ CONFIG_PRINT_TIMESTAMP=y
  # CONFIG_SPL_SHA256 is not set
  CONFIG_ZSTD=y
+ # CONFIG_HEXDUMP is not set
 +CONFIG_OF_LIBFDT_OVERLAY=y
 diff --git a/include/configs/k1-x.h b/include/configs/k1-x.h
-index f1f4be78..34ad156e 100644
+index 8d27fe9d..c7f42bbc 100644
 --- a/include/configs/k1-x.h
 +++ b/include/configs/k1-x.h
 @@ -84,11 +84,6 @@
@@ -164,7 +164,7 @@ index f1f4be78..34ad156e 100644
  #include <config_distro_bootcmd.h>
  
  #define BOOTENV_DEV_QEMU(devtypeu, devtypel, instance) \
-@@ -167,11 +167,6 @@ struct boot_storage_op
+@@ -167,16 +167,13 @@ struct boot_storage_op
  /*if env not use for spl, please define to board/spacemit/k1-x/k1-x.env */
  #define CONFIG_EXTRA_ENV_SETTINGS \
  	"stdout_flash=serial,vidconsole\0" \
@@ -175,11 +175,6 @@ index f1f4be78..34ad156e 100644
 -	"dtb_addr=" __stringify(DTB_LOAD_ADDR) "\0" \
  	"scriptaddr=0x2c100000\0" \
  	"pxefile_addr_r=0x0c200000\0" \
- 	"ipaddr=192.168.1.15\0" \
-@@ -179,9 +174,11 @@ struct boot_storage_op
- 	"serverip=10.0.92.134\0" \
- 	"gatewayip=192.168.1.1\0" \
- 	"net_data_path=spacemit_flash_file/net_flash_file/\0" \
 -	"splashimage=" __stringify(CONFIG_FASTBOOT_BUF_ADDR) "\0" \
 -	"splashpos=m,m\0" \
 -	"splashfile=bianbu.bmp\0" \
