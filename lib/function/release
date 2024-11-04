@@ -24,6 +24,8 @@ else
 deb ${MIRROR} ${DISTRO_VERSION} ${POOL}
 EOF
 fi
+# remove security source until available
+if [[ "$ARCH" == "riscv" ]] && [[ "$DISTRO_VERSION" == "trixie" ]]; then sed -i "4d" ${SOURCES_LIST}; fi
 }
 
 devuan_release (){
