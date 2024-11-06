@@ -5,6 +5,7 @@ fw_dynamic (){ # place file.
 if [[ -f "../opensbi-${OPENSBI_TAG}/${OPENSBI_FIRMWARE}" ]]; then cp "../opensbi-${OPENSBI_TAG}/${OPENSBI_FIRMWARE}" .; else report_opensbi_error; fi
 }
 
+# U-BOOT
 spacemit_uboot_download (){
 if [[ -d "${BOARD}-u-boot" ]]; then
 	echo -en "${WHT}${BOARD}-u-boot${FIN} "
@@ -12,7 +13,7 @@ if [[ -d "${BOARD}-u-boot" ]]; then
 	cd ${BOARD}-u-boot
 	make clean
 	#git config pull.rebase false
-	if [[ "$VERBOSE" == "1" ]]; then git checkout ${GIT_UBOOT_TAG}; git pull -q; else git checkout ${GIT_UBOOT_TAG} &> /dev/null; git pull -q; fi
+	if [[ "$VERBOSE" == "1" ]]; then git pull -q; git checkout ${GIT_UBOOT_TAG}; else git pull -q &> /dev/null; git checkout ${GIT_UBOOT_TAG} &> /dev/null; fi
 	echo -en "${PNK}[${FIN}${WHT}restoring${FIN}${PNK}]${FIN} "
 	cd ..; cp -r ${BOARD}-u-boot u-boot
 	# They edit this file to much so lets just remove it and add our own
@@ -33,7 +34,6 @@ else
 fi
 }
 
-# U-BOOT
 uboot_output (){
 if [[ -f "bootinfo_emmc.bin" ]] && [[ -f "u-boot.itb" ]] && [[ -f "fw_dynamic.itb" ]] && [[ -f "FSBL.bin" ]]; then
 	mkdir -p ../../${OUTPUT}
