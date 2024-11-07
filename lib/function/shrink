@@ -62,7 +62,7 @@ uuid
 echo -en "Shrinking ${PNK}[${FIN}${WHT}${IMGSIZE}${FIN}${PNK}]${FIN}"
 if [ $VERBOSE -eq 1 ]; then cp -axv ROOTFS/* p1/; else cp -ax ROOTFS/* p1/; fi
 sleep .75
-echo -en " ${PNK}[${FIN}${YLW}cleaning${FIN}${PNK}]${FIN}"
+echo -en " ${PNK}[${FIN}${YLW}finishing${FIN}${PNK}]${FIN}"
 umount ROOTFS
 sleep .75
 rm -fdr ROOTFS
@@ -108,7 +108,7 @@ else
 	if [[ "$FSTYPE" == "btrfs" ]]; then cp -ax ROOTFS/@/* p2/; else cp -ax ROOTFS/* p2/; fi
 fi
 sleep .75
-echo -en " ${PNK}[${FIN}${YLW}cleaning${FIN}${PNK}]${FIN}"
+echo -en " ${PNK}[${FIN}${YLW}finishing${FIN}${PNK}]${FIN}"
 umount BOOT; umount ROOTFS
 sleep .75
 rm -fdr BOOT; rm -fdr ROOTFS
