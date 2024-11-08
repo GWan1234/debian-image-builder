@@ -161,6 +161,7 @@ softdep rtw88_8821c post: ehci-hcd
 softdep rtw88_8821cu post: ehci-hcd
 softdep 8821cu post: ehci-hcd
 EOF
+fi
 # Take Realtek wifi dongle out of Driver CDROM Mode
 # Realtek Semiconductor Corp. RTL8188GU 802.11n WLAN Adapter
 mkdir -p /etc/udev/rules.d
@@ -173,7 +174,6 @@ EOF
 cat <<EOF > /etc/udev/rules.d/usb_modeswitch.rules
 ATTR{idVendor}=="0bda", ATTR{idProduct}=="1a2b", RUN+="/usr/sbin/usb_modeswitch -v 0bda -p 1a2b -J"
 EOF
-fi
 }
 
 router_udev_rules (){
