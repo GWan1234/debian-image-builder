@@ -157,18 +157,8 @@ if [[ -d "../../${LINUX_PATCHDIR}/${LINUX_VERSION}" ]]; then
 		for i in ../../${LINUX_PATCHDIR}/${LINUX_VERSION}/*.patch; do patch -N -p1 < $i; done >> ${LOG_FILE}
 	fi
 fi
-# this needs to be removed
+# platform specific patching
 if [[ `type ${FAMILY}_extra_patching` ]] &>/dev/null; then ${FAMILY}_extra_patching; fi
-# drop in dts files
-if [[ -d "../../${LINUX_PATCHDIR}/dts/${ARCH}" ]]; then
-	if [[ `ls ../../${LINUX_PATCHDIR}/dts/${ARCH}/{Makefile,*.dts}` ]] > /dev/null 2>&1; then
-		echo "# ${LINUX_PATCHDIR}/dts/${ARCH}" | sed -e 's/\(.*\)/\U\1/' >> ${LOG_FILE}
-		ls ../../${LINUX_PATCHDIR}/dts/${ARCH}/*.dts* | sed 's/..\/..\///g' >> ${LOG_FILE}
-		cp -fr ../../${LINUX_PATCHDIR}/dts/${ARCH}/*.dts* arch/${ARCH}/boot/dts/${PLATFORM}
-		echo "" >> arch/${ARCH}/boot/dts/${PLATFORM}/Makefile
-		cat ../../${LINUX_PATCHDIR}/dts/${ARCH}/Makefile >> arch/${ARCH}/boot/dts/${PLATFORM}/Makefile
-	fi
-fi
 # overlays
 if [[ -f "arch/${ARCH}/boot/dts/Makefile" ]] && [[ `ls ../../${OVERLAYPATCHES}/${ARCH}/{Makefile,*.dts}` ]] > /dev/null 2>&1; then
 	echo "" >> "arch/${ARCH}/boot/dts/Makefile"
