@@ -159,7 +159,7 @@ if [[ -d "../../${LINUX_PATCHDIR}/${LINUX_VERSION}" ]]; then
 fi
 # this needs to be removed
 if [[ `type ${FAMILY}_extra_patching` ]] &>/dev/null; then ${FAMILY}_extra_patching; fi
-# add lose device trees
+# drop in dts files
 if [[ -d "../../${LINUX_PATCHDIR}/dts/${ARCH}" ]]; then
 	if [[ `ls ../../${LINUX_PATCHDIR}/dts/${ARCH}/{Makefile,*.dts}` ]] > /dev/null 2>&1; then
 		echo "# ${LINUX_PATCHDIR}/dts/${ARCH}" | sed -e 's/\(.*\)/\U\1/' >> ${LOG_FILE}
