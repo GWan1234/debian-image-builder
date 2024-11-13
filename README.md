@@ -28,14 +28,13 @@ BananaPi M2S
 BananaPi M5
 H96-MAX X3
 Le Potato
-Odroid C1 (*)
 Odroid C4
 Odroid HC4
 Odroid N2
 Odroid N2L
 Odroid N2+
 Radxa Zero
-X96-AIR	GBIT / Q2
+X96-AIR	GBIT / QCOM
 
 # FREESCALE
 Cubox-I (*)
@@ -111,7 +110,7 @@ Network Manager		# 1 networkmanager | 0 ifupdown
 
 U-Boot and Linux
 U-Boot:			# Supported: v2024.01
-Branch:			# Supported: 6.1.y / 6.6.y and "maybe" current stable / rc
+Branch:			# Supported: 6.6.y and "maybe" current stable / rc
 Build:			# Kernel build version number
 Menuconfig:		# Run uboot and kernel menuconfig
 Compiler:		# GNU Compiler Collection / Clang
