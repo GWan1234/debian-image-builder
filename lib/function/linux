@@ -29,8 +29,12 @@ if [[ "$VERSION" =~ ^([0-9].[0-9].y|[0-9].[0-9][0-9].y)$ ]]; then
 		sed 's/VERSION = //g' > revision.txt
 		curl --silent -L ${URL}/plain/Makefile?h=${KERNEL}-${VERSION} | grep -m1 "PATCHLEVEL" | \
 		sed 's/PATCHLEVEL = /./g' >> revision.txt
-		curl --silent -L ${URL}/plain/Makefile?h=${KERNEL}-${VERSION} | grep -m1 "SUBLEVEL" | \
-		sed 's/SUBLEVEL = /./g' >> revision.txt
+		if [[ `curl --silent -L ${URL}/plain/Makefile?h=${KERNEL}-${VERSION} | grep -m1 "SUBLEVEL" | \
+			sed 's/SUBLEVEL = /./g' | grep -w ".0"` ]]; then :;
+		else
+			curl --silent -L ${URL}/plain/Makefile?h=${KERNEL}-${VERSION} | grep -m1 "SUBLEVEL" | \
+			sed 's/SUBLEVEL = /./g' >> revision.txt
+		fi
 		curl --silent -L ${URL}/plain/Makefile?h=${KERNEL}-${VERSION} | grep -m1 "EXTRAVERSION" | \
 		sed 's/EXTRAVERSION =//g' | sed 's/ //g' >> revision.txt
 		REVISION=$(tr -d '\n' < revision.txt)
