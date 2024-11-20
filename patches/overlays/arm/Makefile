@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0
 dtbo-$(CONFIG_ARCH_EXYNOS) += \
-	exynos5422-odroidxu4-ads7846.dtbo \
 	exynos5422-odroidxu4-hktft-cs-ogst.dtbo \
 	exynos5422-odroidxu4-hktft32.dtbo \
 	exynos5422-odroidxu4-hktft35.dtbo \
