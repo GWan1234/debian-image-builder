@@ -1,11 +1,10 @@
 From 9df739ae07d769bf9b35b7368cbc7c091699de0a Mon Sep 17 00:00:00 2001
 From: Patrick Yavitz <pyavitz@gmail.com>
 Date: Sat, 23 Nov 2024 09:37:47 -0500
-Subject: [PATCH] hide brcmf_set_channel set chanspec xxxxxxx fail with debug
+Subject: [PATCH] hide brcmf_set_channel set chanspec xxxxxxx fail
 
 On early kernel revs setting the reg domain fixed the problem. But on 6.12.y
-using Debian Trixie the error persist, so lets just hide it with debug for
-the time being.
+using Debian Trixie the error persist, so lets comment out.
 
 Signed-off-by: Patrick Yavitz <pyavitz@gmail.com>
 ---
@@ -21,7 +20,7 @@ index 349aa3439502..c720598d328e 100644
  		err = brcmf_fil_iovar_int_set(ifp, "chanspec", chspec);
  		if (err) {
 -			brcmf_err("set chanspec 0x%04x fail, reason %d\n", chspec, err);
-+			brcmf_dbg("set chanspec 0x%04x fail, reason %d\n", chspec, err);
++			//brcmf_err("set chanspec 0x%04x fail, reason %d\n", chspec, err);
  			err = -EINVAL;
  		}
  	} else {
