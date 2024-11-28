@@ -38,7 +38,6 @@ X96-AIR	GBIT / QCOM
 
 # FREESCALE
 Cubox-I (*)
-FT20 (*)
 
 # ROCKCHIP
 Indiedroid Nova (*)
