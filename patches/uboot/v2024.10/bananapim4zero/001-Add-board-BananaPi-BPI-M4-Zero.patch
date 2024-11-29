@@ -1,7 +1,7 @@
-From 137ec7db7d4ef74f510ad039dba38fab4a7095de Mon Sep 17 00:00:00 2001
+From 859a16ccf06d8528418a3d4554b9b7edb20d89cc Mon Sep 17 00:00:00 2001
 From: Patrick Yavitz <pyavitz@gmail.com>
-Date: Wed, 30 Oct 2024 05:43:37 -0400
-Subject: [PATCH] Add board BananaPi BPI-M4-ZERO
+Date: Fri, 29 Nov 2024 10:47:16 -0500
+Subject: [PATCH] Add board BananaPi BPI-M4-Zero
 
 sun50i-h618-bananapi-m4-zero.dts
 sun50i-h618-bananapi-m4.dtsi
@@ -11,8 +11,8 @@ Signed-off-by: Patrick Yavitz <pyavitz@gmail.com>
 ---
  arch/arm/dts/Makefile                         |   1 +
  arch/arm/dts/sun50i-h616.dtsi                 |   6 +
- arch/arm/dts/sun50i-h618-bananapi-m4-zero.dts |  43 +++
- arch/arm/dts/sun50i-h618-bananapi-m4.dtsi     | 244 ++++++++++++++++++
+ arch/arm/dts/sun50i-h618-bananapi-m4-zero.dts |  82 +++++++
+ arch/arm/dts/sun50i-h618-bananapi-m4.dtsi     | 205 ++++++++++++++++++
  configs/bananapi_m4zero_defconfig             |  29 +++
  5 files changed, 323 insertions(+)
  create mode 100644 arch/arm/dts/sun50i-h618-bananapi-m4-zero.dts
@@ -50,10 +50,10 @@ index 921d5f61d8..5ebec7530d 100644
  				pins = "PG10";
 diff --git a/arch/arm/dts/sun50i-h618-bananapi-m4-zero.dts b/arch/arm/dts/sun50i-h618-bananapi-m4-zero.dts
 new file mode 100644
-index 0000000000..1265a8f824
+index 0000000000..8475af2525
 --- /dev/null
 +++ b/arch/arm/dts/sun50i-h618-bananapi-m4-zero.dts
-@@ -0,0 +1,43 @@
+@@ -0,0 +1,82 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Copyright (c) 2024 Patrick Yavitz <pyavitz@gmail.com>
@@ -85,8 +85,47 @@ index 0000000000..1265a8f824
 +	status = "disabled";
 +};
 +
++&mmc1 {
++	status = "okay";
++	bus-width = <4>;
++	max-frequency = <100000000>;
++
++	non-removable;
++	disable-wp;
++
++	/* WiFi firmware requires power to be kept while in suspend */
++	keep-power-in-suspend;
++
++	mmc-pwrseq = <&wifi_pwrseq>;
++
++	cd-gpios = <&pio 6 15 GPIO_ACTIVE_HIGH>; /* PG15 */
++	vmmc-supply = <&reg_vcc3v3>;
++
++	sdio: wifi@1 {
++		reg = <1>;
++		compatible = "brcm,bcm4329-fmac";
++	};
++};
++
 +&ohci3 {
 +	status = "okay";
++};
++
++&uart1 {
++	status = "okay";
++	pinctrl-0 = <&uart1_pins>, <&uart1_rts_cts_pins>;
++	pinctrl-names = "default";
++	uart-has-rtscts;
++
++	bluetooth {
++		compatible = "brcm,bcm43540-bt";
++		host-wakeup-gpios = <&pio 6 16 GPIO_ACTIVE_HIGH>;
++		device-wakeup-gpios = <&pio 6 17 GPIO_ACTIVE_HIGH>;
++		shutdown-gpios = <&pio 6 19 GPIO_ACTIVE_HIGH>;
++		max-speed = <1500000>;
++		vbat-supply = <&reg_vcc3v3>;
++		vddio-supply = <&reg_vcc1v8>;
++	};
 +};
 +
 +&usbotg {
@@ -99,10 +138,10 @@ index 0000000000..1265a8f824
 +};
 diff --git a/arch/arm/dts/sun50i-h618-bananapi-m4.dtsi b/arch/arm/dts/sun50i-h618-bananapi-m4.dtsi
 new file mode 100644
-index 0000000000..8e5ddfe01b
+index 0000000000..0a2b8a839a
 --- /dev/null
 +++ b/arch/arm/dts/sun50i-h618-bananapi-m4.dtsi
-@@ -0,0 +1,244 @@
+@@ -0,0 +1,205 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Copyright (c) 2024 Patrick Yavitz <pyavitz@gmail.com>
@@ -223,28 +262,6 @@ index 0000000000..8e5ddfe01b
 +	vmmc-supply = <&reg_vcc3v3>;
 +};
 +
-+&mmc1 {
-+	status = "okay";
-+	bus-width = <4>;
-+	max-frequency = <100000000>;
-+
-+	non-removable;
-+	disable-wp;
-+
-+	/* WiFi firmware requires power to be kept while in suspend */
-+	keep-power-in-suspend;
-+
-+	mmc-pwrseq = <&wifi_pwrseq>;
-+
-+	cd-gpios = <&pio 6 15 GPIO_ACTIVE_HIGH>; /* PG15 */
-+	vmmc-supply = <&reg_vcc3v3>;
-+
-+	sdio: wifi@1 {
-+		reg = <1>;
-+		compatible = "brcm,bcm4329-fmac";
-+	};
-+};
-+
 +&mmc2 {
 +	status = "okay";
 +	bus-width = <8>;
@@ -323,23 +340,6 @@ index 0000000000..8e5ddfe01b
 +	status = "okay";
 +	pinctrl-0 = <&uart0_ph_pins>;
 +	pinctrl-names = "default";
-+};
-+
-+&uart1 {
-+	status = "okay";
-+	pinctrl-0 = <&uart1_pins>, <&uart1_rts_cts_pins>;
-+	pinctrl-names = "default";
-+	uart-has-rtscts;
-+
-+	bluetooth {
-+		compatible = "brcm,bcm43540-bt";
-+		host-wakeup-gpios = <&pio 6 16 GPIO_ACTIVE_HIGH>;
-+		device-wakeup-gpios = <&pio 6 17 GPIO_ACTIVE_HIGH>;
-+		shutdown-gpios = <&pio 6 19 GPIO_ACTIVE_HIGH>;
-+		max-speed = <1500000>;
-+		vbat-supply = <&reg_vcc3v3>;
-+		vddio-supply = <&reg_vcc1v8>;
-+	};
 +};
 +
 +&uart5 {
