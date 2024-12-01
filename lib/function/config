@@ -10,6 +10,9 @@ ENABLE_VFAT="false"
 # Root Filesystem Types: ext4 btrfs xfs
 FSTYPE="ext4"
 
+# Use a boot script instead of extlinux
+ENABLE_BOOTCMD="false"
+
 # UEFI Options (WIP)
 ENABLE_EFI="false"
 
