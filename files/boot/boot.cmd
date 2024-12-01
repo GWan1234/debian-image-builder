@@ -59,7 +59,7 @@ ${loading} ${devtype} ${devnum}:${distro_bootpart} ${kernel_addr_r} ${fk_kvers} 
 
 if test -e ${devtype} ${devnum}:${distro_bootpart} ${ovconfig}; then
 	fdt addr ${fdt_addr_r}
-	fdt resize
+	fdt resize 8192
 	setexpr fdtovaddr ${fdt_addr_r} + ${fdtoverlay_addr_r}
 	if load ${devtype} ${devnum}:${distro_bootpart} ${fdtovaddr} ${ovconfig} \
 		&& env import -t ${fdtovaddr} ${filesize} && test -n ${overlays}; then
