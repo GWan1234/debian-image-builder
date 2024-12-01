@@ -63,10 +63,9 @@ if test -e ${devtype} ${devnum}:${distro_bootpart} ${ovconfig}; then
 	setexpr fdtovaddr ${fdt_addr_r} + ${fdtoverlay_addr_r}
 	if load ${devtype} ${devnum}:${distro_bootpart} ${fdtovaddr} ${ovconfig} \
 		&& env import -t ${fdtovaddr} ${filesize} && test -n ${overlays}; then
-		echo "Loaded overlay.txt: ${overlays}"
-		for ov in ${overlays}; do
-			echo "Applying ${ov} ..."
-			load ${devtype} ${devnum}:${distro_bootpart} ${fdtovaddr} ${fdtdir}/overlays/${ov}.dtbo && fdt apply ${fdtovaddr}
+		for dtoverlay in ${overlays}; do
+			echo "Applying ${dtoverlay} ..."
+			load ${devtype} ${devnum}:${distro_bootpart} ${fdtovaddr} ${fdtdir}/overlays/${dtoverlay}.dtbo && fdt apply ${fdtovaddr}
 		done
 	fi
 fi
