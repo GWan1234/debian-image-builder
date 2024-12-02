@@ -49,6 +49,11 @@ if test -e ${devtype} ${devnum}:${distro_bootpart} overlays.txt; then
 elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/overlays.txt; then
 	setenv ovconfig "boot/overlays.txt"
 fi
+if test -e ${devtype} ${devnum}:${distro_bootpart} user-overlays; then
+	setenv uoldir user-overlays
+elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/user-overlays; then
+	setenv uoldir boot/user-overlays
+fi
 
 setenv bootargs "${console} rw root=PARTUUID=${uuid} ${rootfstype} ${verbose} fsck.repair=yes ${extra} rootwait"
 
@@ -66,6 +71,13 @@ if test -e ${devtype} ${devnum}:${distro_bootpart} ${ovconfig}; then
 		for dtoverlay in ${overlays}; do
 			echo "Applying ${dtoverlay} ..."
 			load ${devtype} ${devnum}:${distro_bootpart} ${fdtovaddr} ${fdtdir}/overlays/${dtoverlay}.dtbo && fdt apply ${fdtovaddr}
+		done
+	fi
+	if load ${devtype} ${devnum}:${distro_bootpart} ${fdtovaddr} ${ovconfig} \
+		&& env import -t ${fdtovaddr} ${filesize} && test -n ${user_overlays}; then
+		for dtoverlay in ${user_overlays}; do
+			echo "Applying ${dtoverlay} ..."
+			load ${devtype} ${devnum}:${distro_bootpart} ${fdtovaddr} ${uoldir}/${dtoverlay}.dtbo && fdt apply ${fdtovaddr}
 		done
 	fi
 fi

@@ -321,6 +321,7 @@ if [[ "$P_VALUE" == "p2" ]]; then
 		${BOOT_PATH}/boot.cmd; fi
 fi
 echo "#overlays=" > ${BOOT_PATH}/overlays.txt
+echo "#user_overlays=" >> ${BOOT_PATH}/overlays.txt
 echo "" >> ${BOOT_PATH}/boot.cmd
 echo "# mkimage -C none -A ${ARCH} -T script -d boot.cmd boot.scr" >> ${BOOT_PATH}/boot.cmd
 mkimage -C none -A ${ARCH} -T script -d ${BOOT_PATH}/boot.cmd ${BOOT_PATH}/boot.scr
