@@ -12,6 +12,7 @@ setenv nvme_devtype "nvme"
 setenv nvme_devnum "0"
 setenv nvme_bootpart "1"
 
+# force nvme boot
 if test "${nvme_boot}" = true; then
 	if test -e ${nvme_devtype} ${nvme_devnum}:${nvme_bootpart} /boot.scr; then
 		setenv devtype $nvme_devtype
@@ -24,35 +25,28 @@ if test "${nvme_boot}" = true; then
 	fi
 fi
 
+# set boot variables
 if test -e ${devtype} ${devnum}:${distro_bootpart} config.txt; then
 	setenv envconfig "config.txt"
+	setenv fk_kvers ${kernel}
+	setenv initrd ${initramfs}
+	setenv fdtdir ${platform}
+	part uuid ${devtype} ${devnum}:2 uuid
 	echo "Loading ${envconfig} from ${devtype} ${devnum}:${distro_bootpart} ..."
 	load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${envconfig}
 	env import -t ${scriptaddr} ${filesize}
 elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/config.txt; then
 	setenv envconfig "boot/config.txt"
+	setenv fk_kvers boot/${kernel}
+	setenv initrd boot/${initramfs}
+	setenv fdtdir boot/${platform}
+	part uuid ${devtype} ${devnum}:1 uuid
 	echo "Loading ${envconfig} from ${devtype} ${devnum}:${distro_bootpart} ..."
 	load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${envconfig}
 	env import -t ${scriptaddr} ${filesize}
 fi
 
-if test -e ${devtype} ${devnum}:${distro_bootpart} ${kernel}; then
-	setenv fk_kvers ${kernel}
-	part uuid ${devtype} ${devnum}:2 uuid
-elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/${kernel}; then
-	setenv fk_kvers boot/${kernel}
-	part uuid ${devtype} ${devnum}:1 uuid
-fi
-if test -e ${devtype} ${devnum}:${distro_bootpart} ${initramfs}; then
-	setenv initrd ${initramfs}
-elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/${initramfs}; then
-	setenv initrd boot/${initramfs}
-fi
-if test -e ${devtype} ${devnum}:${distro_bootpart} ${platform}/${fdtfile}; then
-	setenv fdtdir ${platform}
-elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/${platform}/${fdtfile}; then
-	setenv fdtdir boot/${platform}
-fi
+# set user overlays directory
 if test -e ${devtype} ${devnum}:${distro_bootpart} user-overlays; then
 	setenv user_overlay_dir user-overlays
 elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/user-overlays; then
