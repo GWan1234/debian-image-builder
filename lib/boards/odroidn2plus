@@ -85,7 +85,7 @@ FORCE_LINUX_VERSION=""
 FORCE_UBOOT_VERSION="v2024.07"
 
 # devicetree and platform
-DEVICETREE="${DTB}.dtb meson64_odroidn2_plus.dtb"
+DEVICETREE="${DTB}.dtb"
 PLATFORM="${FAMILY}"
 
 # kernel package name (if shared patching set to true)
