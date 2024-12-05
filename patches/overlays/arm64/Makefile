@@ -22,7 +22,6 @@ dtbo-$(CONFIG_ARCH_MESON) += \
 	meson-g12b-bananapi-m2s-rtl8822cs.dtbo \
 	meson-g12b-odroid-n2-canfd0.dtbo \
 	meson-g12b-odroid-n2-i2c0.dtbo \
-	meson-g12b-odroid-n2-i2c1.dtbo \
 	meson-g12b-odroid-n2-spidev0.dtbo \
 	meson-g12b-odroid-n2-spi.dtbo \
 	meson-g12b-odroid-n2-uart0.dtbo \
