@@ -12,7 +12,7 @@ setenv nvme_devtype "nvme"
 setenv nvme_devnum "0"
 setenv nvme_bootpart "1"
 
-# force nvme boot
+# Force nvme boot
 if test "${nvme_boot}" = true; then
 	if test -e ${nvme_devtype} ${nvme_devnum}:${nvme_bootpart} /boot.scr; then
 		setenv devtype $nvme_devtype
@@ -25,7 +25,7 @@ if test "${nvme_boot}" = true; then
 	fi
 fi
 
-# set boot variables
+# Set boot variables
 if test -e ${devtype} ${devnum}:${distro_bootpart} config.txt; then
 	setenv envconfig "config.txt"
 	setenv fk_kvers ${kernel}
@@ -36,9 +36,6 @@ if test -e ${devtype} ${devnum}:${distro_bootpart} config.txt; then
 		setenv fdtdir ${platform}
 	fi
 	part uuid ${devtype} ${devnum}:2 uuid
-	echo "Loading ${envconfig} from ${devtype} ${devnum}:${distro_bootpart} ..."
-	load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${envconfig}
-	env import -t ${scriptaddr} ${filesize}
 elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/config.txt; then
 	setenv envconfig "boot/config.txt"
 	setenv fk_kvers boot/${kernel}
@@ -49,12 +46,13 @@ elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/config.txt; then
 		setenv fdtdir boot/${platform}
 	fi
 	part uuid ${devtype} ${devnum}:1 uuid
-	echo "Loading ${envconfig} from ${devtype} ${devnum}:${distro_bootpart} ..."
-	load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${envconfig}
-	env import -t ${scriptaddr} ${filesize}
 fi
 
-# set user overlays directory
+echo "Loading ${envconfig} from ${devtype} ${devnum}:${distro_bootpart} ..."
+load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${envconfig}
+env import -t ${scriptaddr} ${filesize}
+
+# Set user overlays directory
 if test -e ${devtype} ${devnum}:${distro_bootpart} user-overlays; then
 	setenv user_overlay_dir user-overlays
 elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/user-overlays; then
