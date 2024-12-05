@@ -30,7 +30,11 @@ if test -e ${devtype} ${devnum}:${distro_bootpart} config.txt; then
 	setenv envconfig "config.txt"
 	setenv fk_kvers ${kernel}
 	setenv initrd ${initramfs}
-	setenv fdtdir ${platform}
+	if test -e ${devtype} ${devnum}:${distro_bootpart} ${vendor}; then
+		setenv fdtdir ${vendor}
+	elif test -e ${devtype} ${devnum}:${distro_bootpart} ${platform}; then
+		setenv fdtdir ${platform}
+	fi
 	part uuid ${devtype} ${devnum}:2 uuid
 	echo "Loading ${envconfig} from ${devtype} ${devnum}:${distro_bootpart} ..."
 	load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${envconfig}
@@ -39,7 +43,11 @@ elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/config.txt; then
 	setenv envconfig "boot/config.txt"
 	setenv fk_kvers boot/${kernel}
 	setenv initrd boot/${initramfs}
-	setenv fdtdir boot/${platform}
+	if test -e ${devtype} ${devnum}:${distro_bootpart} boot/${vendor}; then
+		setenv fdtdir boot/${vendor}
+	elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/${platform}; then
+		setenv fdtdir boot/${platform}
+	fi
 	part uuid ${devtype} ${devnum}:1 uuid
 	echo "Loading ${envconfig} from ${devtype} ${devnum}:${distro_bootpart} ..."
 	load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${envconfig}
