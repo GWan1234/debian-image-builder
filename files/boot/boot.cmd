@@ -30,21 +30,13 @@ if test -e ${devtype} ${devnum}:${distro_bootpart} config.txt; then
 	setenv envconfig "config.txt"
 	setenv fk_kvers ${kernel}
 	setenv initrd ${initramfs}
-	if test -e ${devtype} ${devnum}:${distro_bootpart} ${vendor}; then
-		setenv fdtdir ${vendor}
-	elif test -e ${devtype} ${devnum}:${distro_bootpart} ${platform}; then
-		setenv fdtdir ${platform}
-	fi
+	setenv fdtdir ${platform}
 	part uuid ${devtype} ${devnum}:2 uuid
 elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/config.txt; then
 	setenv envconfig "boot/config.txt"
 	setenv fk_kvers boot/${kernel}
 	setenv initrd boot/${initramfs}
-	if test -e ${devtype} ${devnum}:${distro_bootpart} boot/${vendor}; then
-		setenv fdtdir boot/${vendor}
-	elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/${platform}; then
-		setenv fdtdir boot/${platform}
-	fi
+	setenv fdtdir boot/${platform}
 	part uuid ${devtype} ${devnum}:1 uuid
 fi
 
