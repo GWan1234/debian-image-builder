@@ -26,30 +26,25 @@ if test "${nvme_boot}" = true; then
 fi
 
 # Set boot variables
-if test -e ${devtype} ${devnum}:${distro_bootpart} config.txt; then
+if test -e ${devtype} ${devnum}:${distro_bootpart} boot.scr; then
 	setenv envconfig "config.txt"
 	setenv fk_kvers ${kernel}
 	setenv initrd ${initramfs}
 	setenv fdtdir ${platform}
 	part uuid ${devtype} ${devnum}:2 uuid
-elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/config.txt; then
+	setenv user_overlay_dir user-overlays
+elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/boot.scr; then
 	setenv envconfig "boot/config.txt"
 	setenv fk_kvers boot/${kernel}
 	setenv initrd boot/${initramfs}
 	setenv fdtdir boot/${platform}
+	setenv user_overlay_dir boot/user-overlays
 	part uuid ${devtype} ${devnum}:1 uuid
 fi
 
 echo "Loading ${envconfig} from ${devtype} ${devnum}:${distro_bootpart} ..."
 load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${envconfig}
 env import -t ${scriptaddr} ${filesize}
-
-# Set user overlays directory
-if test -e ${devtype} ${devnum}:${distro_bootpart} user-overlays; then
-	setenv user_overlay_dir user-overlays
-elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/user-overlays; then
-	setenv user_overlay_dir boot/user-overlays
-fi
 
 setenv bootargs "${console} rw root=PARTUUID=${uuid} ${rootfstype} ${verbose} fsck.repair=yes ${extra} rootwait"
 
