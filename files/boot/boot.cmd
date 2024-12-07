@@ -31,8 +31,8 @@ if test -e ${devtype} ${devnum}:${distro_bootpart} boot.scr; then
 	setenv fk_kvers ${kernel}
 	setenv initrd ${initramfs}
 	setenv fdtdir ${platform}
-	part uuid ${devtype} ${devnum}:2 uuid
 	setenv user_overlay_dir user-overlays
+	part uuid ${devtype} ${devnum}:2 uuid
 elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/boot.scr; then
 	setenv envconfig "boot/config.txt"
 	setenv fk_kvers boot/${kernel}
