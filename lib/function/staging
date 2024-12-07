@@ -303,12 +303,10 @@ echo -en "$BOARD: "; echo -e "Installing boot script ..."
 if [[ "$P_VALUE" == "p1" ]]; then BOOT_PATH="p1/boot"; else BOOT_PATH="p1"; fi
 rm -f ${BOOT_PATH}/{boot.cmd,boot.scr}
 cp -f files/boot/boot.cmd ${BOOT_PATH}/
-sed -i 's/^setenv bootlabel "".*/setenv bootlabel "'"${DEFAULT_MOTD}"'"/g' ${BOOT_PATH}/boot.cmd
 sed -i 's/^setenv rootfstype "".*/setenv rootfstype "'"${ROOT_FSTYPE}"'"/g' ${BOOT_PATH}/boot.cmd
 sed -i 's/^setenv kernel "".*/setenv kernel "'"${BOOT_KERNEL}"'"/g' ${BOOT_PATH}/boot.cmd
 sed -i 's/^setenv initramfs "".*/setenv initramfs "'"${BOOT_INITRD}"'"/g' ${BOOT_PATH}/boot.cmd
 sed -i 's/^setenv platform "".*/setenv platform "'"${FAMILY}"'"/g' ${BOOT_PATH}/boot.cmd
-sed -i 's/^setenv fdtfile "".*/setenv fdtfile "'"${DTB}.dtb"'"/g' ${BOOT_PATH}/boot.cmd
 if [[ "$P_VALUE" == "p1" ]]; then
 	sed -i 's/^setenv loading "".*/setenv loading "'"ext4load"'"/g' ${BOOT_PATH}/boot.cmd
 fi
@@ -321,8 +319,10 @@ echo "" >> ${BOOT_PATH}/boot.cmd
 echo "# mkimage -C none -A ${ARCH} -T script -d boot.cmd boot.scr" >> ${BOOT_PATH}/boot.cmd
 cat <<EOF > "${BOOT_PATH}/config.txt"
 # USER CONFIG
+bootlabel=${DEFAULT_MOTD}
 console=${CONSOLE}
 extra=${EXTRA}
+fdtfile=${DTB}.dtb
 verbose=${LOGLEVEL}
 
 # OVERLAYS

@@ -1,11 +1,9 @@
 # DEBIAN IMAGE BUILDER
 
-setenv bootlabel ""
 setenv rootfstype ""
 setenv kernel ""
 setenv initramfs ""
 setenv platform ""
-setenv fdtfile ""
 
 setenv nvme_boot "false"
 setenv nvme_devtype "nvme"
