@@ -321,8 +321,8 @@ echo "" >> ${BOOT_PATH}/boot.cmd
 echo "# mkimage -C none -A ${ARCH} -T script -d boot.cmd boot.scr" >> ${BOOT_PATH}/boot.cmd
 cat <<EOF > "${BOOT_PATH}/config.txt"
 # USER CONFIG
+console=${CONSOLE}
 extra=${EXTRA}
-#user_console=${CONSOLE}
 verbose=${LOGLEVEL}
 
 # OVERLAYS

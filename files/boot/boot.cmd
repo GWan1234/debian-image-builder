@@ -46,9 +46,6 @@ echo "Loading ${envconfig} from ${devtype} ${devnum}:${distro_bootpart} ..."
 load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${envconfig}
 env import -t ${scriptaddr} ${filesize}
 
-# Set console
-if test -n ${user_console}; then setenv console ${user_console}; fi
-
 setenv bootargs "${console} rw root=PARTUUID=${uuid} ${rootfstype} ${verbose} fsck.repair=yes ${extra} rootwait"
 
 setenv loading ""
