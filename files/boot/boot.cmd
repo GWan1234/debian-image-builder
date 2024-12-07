@@ -25,14 +25,14 @@ fi
 
 # Set boot variables
 if test -e ${devtype} ${devnum}:${distro_bootpart} boot.scr; then
-	setenv envconfig "config.txt"
+	setenv uconfig "uconfig.txt"
 	setenv fk_kvers ${kernel}
 	setenv initrd ${initramfs}
 	setenv fdtdir ${platform}
 	setenv user_overlay_dir user-overlays
 	part uuid ${devtype} ${devnum}:2 uuid
 elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/boot.scr; then
-	setenv envconfig "boot/config.txt"
+	setenv uconfig "boot/uconfig.txt"
 	setenv fk_kvers boot/${kernel}
 	setenv initrd boot/${initramfs}
 	setenv fdtdir boot/${platform}
@@ -40,8 +40,8 @@ elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/boot.scr; then
 	part uuid ${devtype} ${devnum}:1 uuid
 fi
 
-echo "Loading ${envconfig} from ${devtype} ${devnum}:${distro_bootpart} ..."
-load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${envconfig}
+echo "Loading ${uconfig} from ${devtype} ${devnum}:${distro_bootpart} ..."
+load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${uconfig}
 env import -t ${scriptaddr} ${filesize}
 
 setenv bootargs "${console} rw root=PARTUUID=${uuid} ${rootfstype} ${verbose} fsck.repair=yes ${extra} rootwait"
@@ -51,18 +51,18 @@ ${loading} ${devtype} ${devnum}:${distro_bootpart} ${kernel_addr_r} ${fk_kvers} 
 && ${loading} ${devtype} ${devnum}:${distro_bootpart} ${fdt_addr_r} ${fdtdir}/${fdtfile} \
 && ${loading} ${devtype} ${devnum}:${distro_bootpart} ${ramdisk_addr_r} ${initrd}
 
-if test -e ${devtype} ${devnum}:${distro_bootpart} ${envconfig}; then
+if test -e ${devtype} ${devnum}:${distro_bootpart} ${uconfig}; then
 	fdt addr ${fdt_addr_r}
 	fdt resize 8192
 	setexpr fdtovaddr ${fdt_addr_r} + ${fdtoverlay_addr_r}
-	if load ${devtype} ${devnum}:${distro_bootpart} ${fdtovaddr} ${envconfig} \
+	if load ${devtype} ${devnum}:${distro_bootpart} ${fdtovaddr} ${uconfig} \
 		&& env import -t ${fdtovaddr} ${filesize} && test -n ${overlays}; then
 		for dtoverlay in ${overlays}; do
 			echo "Applying ${dtoverlay} ..."
 			load ${devtype} ${devnum}:${distro_bootpart} ${fdtovaddr} ${fdtdir}/overlays/${dtoverlay}.dtbo && fdt apply ${fdtovaddr}
 		done
 	fi
-	if load ${devtype} ${devnum}:${distro_bootpart} ${fdtovaddr} ${envconfig} \
+	if load ${devtype} ${devnum}:${distro_bootpart} ${fdtovaddr} ${uconfig} \
 		&& env import -t ${fdtovaddr} ${filesize} && test -n ${user_overlays}; then
 		for dtoverlay in ${user_overlays}; do
 			echo "Applying ${dtoverlay} ..."
