@@ -42,10 +42,11 @@ RKBIN_RAM=""
 BOARD="orangepi5"
 OUTPUT="output/${BOARD}"
 
-# extlinux
+# extlinux and bootcmd
 BOOT_KERNEL="Image"
 BOOT_INITRD="uInitrd"
-FDTOVERLAYS="#fdtoverlays"
+BOOTCMD_FDTOVERLAYS=""
+EXTLINUX_FDTOVERLAYS="#fdtoverlays"
 
 # cmdline
 CONSOLE="console=tty1 console=ttyS2,115200n8 console=both"

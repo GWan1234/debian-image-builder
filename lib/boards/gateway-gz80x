@@ -39,10 +39,11 @@ BOARD_FIP="jethub-j100"
 BOARD="gateway-gz80x"
 OUTPUT="output/${BOARD}"
 
-# extlinux
+# extlinux and bootcmd
 BOOT_KERNEL="Image"
 BOOT_INITRD="uInitrd"
-FDTOVERLAYS="#fdtoverlays"
+BOOTCMD_FDTOVERLAYS=""
+EXTLINUX_FDTOVERLAYS="#fdtoverlays"
 
 # cmdline
 CONSOLE="console=ttyAML0,115200n8"

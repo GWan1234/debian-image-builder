@@ -35,10 +35,11 @@ BOOTCMD="false"
 BOARD="bananapip2zero"
 OUTPUT="output/${BOARD}"
 
-# extlinux
+# extlinux and bootcmd
 BOOT_KERNEL="Image"
 BOOT_INITRD="uInitrd"
-FDTOVERLAYS="#fdtoverlays"
+BOOTCMD_FDTOVERLAYS=""
+EXTLINUX_FDTOVERLAYS="#fdtoverlays"
 
 # cmdline
 CONSOLE="console=tty1 console=ttyS0,115200n8 console=both"

@@ -39,10 +39,11 @@ BOARD_FIP="x96air-gbit"
 BOARD="x96air"
 OUTPUT="output/${BOARD}"
 
-# extlinux
+# extlinux and bootcmd
 BOOT_KERNEL="Image"
 BOOT_INITRD="uInitrd"
-FDTOVERLAYS="#fdtoverlays"
+BOOTCMD_FDTOVERLAYS=""
+EXTLINUX_FDTOVERLAYS="#fdtoverlays"
 
 # cmdline
 CONSOLE="console=tty1 console=ttyAML0,115200n8 console=both"
