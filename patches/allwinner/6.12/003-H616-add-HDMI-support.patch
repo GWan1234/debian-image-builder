@@ -1,5 +1,17 @@
+From ccc69b0cf4fadcf74ab221de91d13bc267c56b05 Mon Sep 17 00:00:00 2001
+From: Patrick Yavitz <pyavitz@gmail.com>
+Date: Tue, 10 Dec 2024 16:17:08 -0500
+Subject: [PATCH] H616 add HDMI support
+
+Can't recall where this patch originated
+
+Signed-off-by: Patrick Yavitz <pyavitz@gmail.com>
+---
+ .../arm64/boot/dts/allwinner/sun50i-h616.dtsi | 213 ++++++++++++++++++
+ 1 file changed, 213 insertions(+)
+
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi
-index de2a736f0e33..2424a2827455 100644
+index 12664d3c727e..a3005efbdc05 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi
 @@ -7,8 +7,11 @@
@@ -14,7 +26,7 @@ index de2a736f0e33..2424a2827455 100644
  #include <dt-bindings/thermal/thermal.h>
  
  / {
-@@ -61,6 +64,12 @@ cpu3: cpu@3 {
+@@ -94,6 +97,12 @@ l2_cache: l2-cache {
  		};
  	};
  
@@ -27,9 +39,9 @@ index de2a736f0e33..2424a2827455 100644
  	reserved-memory {
  		#address-cells = <2>;
  		#size-cells = <2>;
-@@ -117,6 +126,50 @@ soc {
- 		#size-cells = <1>;
- 		ranges = <0x0 0x0 0x0 0x40000000>;
+@@ -160,6 +169,50 @@ crypto: crypto@1904000 {
+ 			resets = <&ccu RST_BUS_CE>;
+ 		};
  
 +		bus@1000000 {
 +			compatible = "allwinner,sun50i-h616-de33",
@@ -78,7 +90,7 @@ index de2a736f0e33..2424a2827455 100644
  		gpu: gpu@1800000 {
  			compatible = "allwinner,sun50i-h616-mali",
  				     "arm,mali-bifrost";
-@@ -149,12 +202,31 @@ syscon: syscon@3000000 {
+@@ -192,12 +245,31 @@ syscon: syscon@3000000 {
  			#size-cells = <1>;
  			ranges;
  
@@ -110,7 +122,7 @@ index de2a736f0e33..2424a2827455 100644
  			};
  
  			sram_c1: sram@1a00000 {
-@@ -756,6 +828,147 @@ ohci3: usb@5311400 {
+@@ -877,6 +949,147 @@ ohci3: usb@5311400 {
  			status = "disabled";
  		};
  
@@ -259,5 +271,5 @@ index de2a736f0e33..2424a2827455 100644
  			compatible = "allwinner,sun50i-h616-rtc";
  			reg = <0x07000000 0x400>;
 -- 
-2.34.1
+2.39.5
 

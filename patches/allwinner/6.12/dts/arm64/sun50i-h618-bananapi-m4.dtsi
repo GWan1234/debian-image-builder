@@ -33,17 +33,6 @@
 		};
 	};
 
-	leds {
-		compatible = "gpio-leds";
-
-		led-0 {
-			color = <LED_COLOR_ID_RED>;
-			function = LED_FUNCTION_STATUS;
-			gpios = <&pio 2 12 GPIO_ACTIVE_HIGH>;	/* PC12 */
-			linux,default-trigger = "heartbeat";
-		};
-	};
-
 	reg_usb_vbus: regulator-usb-vbus {
 		/* Separate discrete regulator for the USB ports */
 		compatible = "regulator-fixed";
@@ -112,6 +101,18 @@
 	hdmi_out_con: endpoint {
 		remote-endpoint = <&hdmi_con_in>;
 	};
+};
+
+&i2c0 {
+	status = "disabled";
+	pinctrl-0 = <&i2c0_pins>;
+	pinctrl-names = "default";
+};
+
+&i2c1 {
+	status = "disabled";
+	pinctrl-0 = <&i2c1_pi_pins>;
+	pinctrl-names = "default";
 };
 
 &i2c3 {

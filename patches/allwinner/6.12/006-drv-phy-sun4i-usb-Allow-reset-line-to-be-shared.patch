@@ -1,7 +1,7 @@
-From 1da4ae0b4a98e34f7f4a5829cc7df05321690fb6 Mon Sep 17 00:00:00 2001
+From bfb87ba70cbf5acfa7c8e34ec679b4cac9f01e62 Mon Sep 17 00:00:00 2001
 From: Andre Przywara <andre.przywara@arm.com>
-Date: Mon, 10 May 2021 11:01:31 +0100
-Subject: [PATCH] drv:phy: sun4i-usb: Allow reset line to be shared
+Date: Tue, 10 Dec 2024 16:20:32 -0500
+Subject: [PATCH] drv: phy: sun4i-usb: Allow reset line to be shared
 
 The USB HCIs (and PHYs?) in Allwinner's newer generation SoCs (H616)
 rely on the reset line of USB PHY 2 to be de-asserted, even when only
@@ -19,10 +19,10 @@ Signed-off-by: Andre Przywara <andre.przywara@arm.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/phy/allwinner/phy-sun4i-usb.c b/drivers/phy/allwinner/phy-sun4i-usb.c
-index 5472db9e87ef..ee4a4f123fba 100644
+index b0f19e950601..fa561af5b6e8 100644
 --- a/drivers/phy/allwinner/phy-sun4i-usb.c
 +++ b/drivers/phy/allwinner/phy-sun4i-usb.c
-@@ -847,7 +847,7 @@ static int sun4i_usb_phy_probe(struct platform_device *pdev)
+@@ -830,7 +830,7 @@ static int sun4i_usb_phy_probe(struct platform_device *pdev)
  		}
  
  		snprintf(name, sizeof(name), "usb%d_reset", i);
@@ -32,5 +32,5 @@ index 5472db9e87ef..ee4a4f123fba 100644
  			dev_err(dev, "failed to get reset %s\n", name);
  			return PTR_ERR(phy->reset);
 -- 
-2.39.2
+2.39.5
 
