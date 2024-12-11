@@ -3,9 +3,9 @@
 
 / {
 	fragment@0 {
-		target = <&uart1>;
+		target = <&uart4>;
 		__overlay__ {
-			status = "disabled";
+			status = "okay";
 		};
 	};
 };

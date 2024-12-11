@@ -5,7 +5,7 @@
 	fragment@0 {
 		target = <&uart5>;
 		__overlay__ {
-			status = "disabled";
+			status = "okay";
 		};
 	};
 };
