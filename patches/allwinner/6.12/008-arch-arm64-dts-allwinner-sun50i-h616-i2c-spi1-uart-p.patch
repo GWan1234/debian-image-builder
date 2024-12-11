@@ -1,17 +1,17 @@
-From f9ca03f7f427e226c6c7374e2eb2bb049f67cd5d Mon Sep 17 00:00:00 2001
+From d7b77d41eda5e216eacead7a12db6e22e2545193 Mon Sep 17 00:00:00 2001
 From: Patrick Yavitz <pyavitz@gmail.com>
-Date: Tue, 10 Dec 2024 16:32:04 -0500
+Date: Wed, 11 Dec 2024 10:40:03 -0500
 Subject: [PATCH] arch: arm64: dts: allwinner: sun50i-h616: i2c spi1 uart pins
 
 BananaPi M4 Pins
 
 Signed-off-by: Patrick Yavitz <pyavitz@gmail.com>
 ---
- .../arm64/boot/dts/allwinner/sun50i-h616.dtsi | 64 +++++++++++++++++++
- 1 file changed, 64 insertions(+)
+ .../arm64/boot/dts/allwinner/sun50i-h616.dtsi | 70 +++++++++++++++++++
+ 1 file changed, 70 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi
-index 08699b85ba24..2f5b9a4a401e 100644
+index 08699b85ba24..303766f3acb9 100644
 --- a/arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi
 +++ b/arch/arm64/boot/dts/allwinner/sun50i-h616.dtsi
 @@ -370,11 +370,33 @@ i2c0_pins: i2c0-pins {
@@ -61,7 +61,7 @@ index 08699b85ba24..2f5b9a4a401e 100644
  			uart0_ph_pins: uart0-ph-pins {
  				pins = "PH0", "PH1";
  				function = "uart0";
-@@ -457,6 +485,42 @@ x32clk_fanout_pin: x32clk-fanout-pin {
+@@ -457,6 +485,48 @@ x32clk_fanout_pin: x32clk-fanout-pin {
  				pins = "PG10";
  				function = "clock";
  			};
@@ -93,6 +93,12 @@ index 08699b85ba24..2f5b9a4a401e 100644
 +			/omit-if-no-ref/
 +			uart4_pi_pins: uart4-pi-pins {
 +				pins = "PI13", "PI14";
++				function = "uart4";
++			};
++
++			/omit-if-no-ref/
++			uart4_pi_rts_cts_pins: uart4-pi-rts-cts-pins {
++				pins = "PI15", "PI16";
 +				function = "uart4";
 +			};
 +
