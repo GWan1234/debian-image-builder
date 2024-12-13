@@ -42,7 +42,7 @@ BOOTCMD_FDTOVERLAYS=""
 EXTLINUX_FDTOVERLAYS="#fdtoverlays"
 
 # cmdline
-CONSOLE="console=tty1 console=ttymxc0,115200n8 console=both"
+CONSOLE="console=ttymxc0,115200n8 console=tty1"
 LOGLEVEL="loglevel=1"
 EXTRA="cma=128M net.ifnames=0"
 
