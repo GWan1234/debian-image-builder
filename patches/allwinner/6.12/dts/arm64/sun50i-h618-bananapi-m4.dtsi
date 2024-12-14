@@ -235,7 +235,6 @@
 	pinctrl-names = "default";
 };
 
-
 &uart1 {
 	status = "disabled";
 	pinctrl-0 = <&uart1_pins>;
