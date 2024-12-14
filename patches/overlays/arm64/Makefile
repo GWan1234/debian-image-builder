@@ -59,6 +59,8 @@ dtbo-$(CONFIG_ARCH_SUNXI) += \
 	sunxi-h5-mbus-devfreq-driver.dtbo \
 	sunxi-h616-pg-15-16-i2c4.dtbo \
 	sunxi-h616-pg-17-18-i2c3.dtbo \
+	sunxi-h616-pg-6-7-uart1.dtbo \
+	sunxi-h616-pg-8-9-rts-cts-uart1.dtbo \
 	sunxi-h616-ph-2-3-uart5.dtbo \
 	sunxi-h616-pi-13-14-uart4.dtbo \
 	sunxi-h616-pi-15-16-rts-cts-uart4.dtbo \

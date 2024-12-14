@@ -235,6 +235,13 @@
 	pinctrl-names = "default";
 };
 
+
+&uart1 {
+	status = "disabled";
+	pinctrl-0 = <&uart1_pins>;
+	pinctrl-names = "default";
+};
+
 &uart4 {
 	status = "disabled";
 	pinctrl-0 = <&uart4_pi_pins>;
