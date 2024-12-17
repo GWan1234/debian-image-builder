@@ -306,7 +306,6 @@ cp -f files/boot/boot.cmd ${BOOT_PATH}/
 sed -i 's/^setenv rootfstype "".*/setenv rootfstype "'"${ROOT_FSTYPE}"'"/g' ${BOOT_PATH}/boot.cmd
 sed -i 's/^setenv kernel "".*/setenv kernel "'"${BOOT_KERNEL}"'"/g' ${BOOT_PATH}/boot.cmd
 sed -i 's/^setenv initramfs "".*/setenv initramfs "'"${BOOT_INITRD}"'"/g' ${BOOT_PATH}/boot.cmd
-sed -i 's/^setenv platform "".*/setenv platform "'"${FAMILY}"'"/g' ${BOOT_PATH}/boot.cmd
 if [[ "$P_VALUE" == "p1" ]]; then
 	sed -i 's/^setenv loading "".*/setenv loading "'"ext4load"'"/g' ${BOOT_PATH}/boot.cmd
 fi
@@ -322,6 +321,7 @@ cat <<EOF > "${BOOT_PATH}/uconfig.txt"
 bootlabel=${DEFAULT_MOTD}
 console=${CONSOLE}
 extra=${EXTRA}
+fdtdir=${FAMILY}
 fdtfile=${DTB}.dtb
 verbose=${LOGLEVEL}
 

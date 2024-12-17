@@ -3,7 +3,6 @@
 setenv rootfstype ""
 setenv kernel ""
 setenv initramfs ""
-setenv platform ""
 
 setenv nvme_boot "false"
 setenv nvme_devtype "nvme"
@@ -28,14 +27,14 @@ if test -e ${devtype} ${devnum}:${distro_bootpart} boot.scr; then
 	setenv uconfig "uconfig.txt"
 	setenv fk_kvers ${kernel}
 	setenv initrd ${initramfs}
-	setenv fdtdir ${platform}
+	setenv fdtdir ${fdtdir}
 	setenv user_overlay_dir user-overlays
 	part uuid ${devtype} ${devnum}:2 uuid
 elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/boot.scr; then
 	setenv uconfig "boot/uconfig.txt"
 	setenv fk_kvers boot/${kernel}
 	setenv initrd boot/${initramfs}
-	setenv fdtdir boot/${platform}
+	setenv fdtdir boot/${fdtdir}
 	setenv user_overlay_dir boot/user-overlays
 	part uuid ${devtype} ${devnum}:1 uuid
 fi
