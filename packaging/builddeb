@@ -95,10 +95,8 @@ if [ "$ARCH" = "um" ] ; then
 else
 	cp System.map "$tmpdir/boot/System.map-$version"
 	cp $KCONFIG_CONFIG "$tmpdir/boot/config-$version"
-	if [ -f arch/arm/boot/zImage ]; then cp arch/arm/boot/zImage "$tmpdir/boot/Image"; fi
-	if [ -f arch/arm64/boot/Image ]; then cp arch/arm64/boot/Image "$tmpdir/boot/Image"; fi
-	#if [ -f arch/riscv/boot/Image ]; then cp arch/riscv/boot/Image "$tmpdir/boot/Image"; fi
-	if [ -f arch/riscv/boot/Image.itb ]; then cp arch/riscv/boot/Image.itb "$tmpdir/boot/Image"; fi
+	# Defined in pkgvars
+	cp arch/$karch/boot/$kimage "$tmpdir/boot/Image"
 fi
 cp "$($MAKE -s -f $srctree/Makefile image_name)" "$tmpdir/$installed_image_path"
 
@@ -252,7 +250,7 @@ clean_headers (){
 find -type f -exec touch {} +
 echo 'y' | make ARCH=$karch M=scripts clean
 patch -p1 < headers-byteshift.patch
-if [ -f scripts/module.lds ]; then :; else install -m 0644 module.lds scripts/; fi
+if [ ! -f scripts/module.lds ]; then install -m 0644 module.lds scripts/; fi
 rm -f {headers-byteshift.patch,module.lds}
 echo 'y' | make ARCH=$karch -j\$(grep -c 'processor' /proc/cpuinfo) -s scripts
 echo 'y' | make ARCH=$karch -j\$(grep -c 'processor' /proc/cpuinfo) -s M=scripts/mod/

@@ -13,19 +13,24 @@ else
 	LINUX_IMAGE="linux-image-${SERIES}"
 	LINUX_HEADERS="linux-headers-${SERIES}"
 fi
+# kernel image
+if [[ "$ARCH" == "arm" ]]; then KIMAGE="zImage"; fi
+if [[ "$ARCH" == "arm64" ]]; then KIMAGE="Image"; fi
+if [[ "$ARCH" == "riscv" ]]; then KIMAGE="Image.itb"; fi
 # install target
 if [[ "$ARCH" == "arm" ]]; then LINUX_PATH="usr/lib/${LINUX_IMAGE}"; fi
 if [[ "$ARCH" =~ ^(arm64|riscv)$ ]]; then LINUX_PATH="usr/lib/${LINUX_IMAGE}/${PLATFORM}"; fi
 INSTALL_PATH="boot/${PLATFORM}"
 # create packaging variables
 echo "# packaging variables" > "scripts/package/pkgvars"
+echo karch='"'$ARCH'"' >> "scripts/package/pkgvars"
+echo kimage='"'$KIMAGE'"' >> "scripts/package/pkgvars"
 echo platform='"'$PLATFORM'"' >> "scripts/package/pkgvars"
 echo series_name='"'$SERIES'"' >> "scripts/package/pkgvars"
 echo linux_name='"'$LINUX_IMAGE'"' >> "scripts/package/pkgvars"
 echo headers_name='"'$LINUX_HEADERS'"' >> "scripts/package/pkgvars"
 echo linux_path='"'$LINUX_PATH'"' >> "scripts/package/pkgvars"
 echo boot_path='"'$INSTALL_PATH'"' >> "scripts/package/pkgvars"
-echo karch='"'$ARCH'"' >> "scripts/package/pkgvars"
 echo "# packaging compression" >> "scripts/package/pkgvars"
 echo compression='"'$COMPRESSION'"' >> "scripts/package/pkgvars"
 }
