@@ -1,6 +1,6 @@
-From 494ffcf7bc43f88aefd399906b4b903ca547ca63 Mon Sep 17 00:00:00 2001
+From 2ae10359c1a477d0931c047bb6a93be29646f7b8 Mon Sep 17 00:00:00 2001
 From: Patrick Yavitz <pyavitz@gmail.com>
-Date: Tue, 10 Dec 2024 17:04:48 -0500
+Date: Sat, 21 Dec 2024 18:56:06 -0500
 Subject: [PATCH] Add board BananaPi BPI-M4-Zero
 
 sun50i-h618-bananapi-m4-zero.dts
@@ -10,11 +10,11 @@ bananapi_m4zero_defconfig
 Signed-off-by: Patrick Yavitz <pyavitz@gmail.com>
 ---
  arch/arm/dts/Makefile                         |   1 +
- arch/arm/dts/sun50i-h616.dtsi                 |   6 +
- arch/arm/dts/sun50i-h618-bananapi-m4-zero.dts |  93 +++++++++
- arch/arm/dts/sun50i-h618-bananapi-m4.dtsi     | 194 ++++++++++++++++++
+ arch/arm/dts/sun50i-h616.dtsi                 |  18 ++
+ arch/arm/dts/sun50i-h618-bananapi-m4-zero.dts |  78 +++++++
+ arch/arm/dts/sun50i-h618-bananapi-m4.dtsi     | 210 ++++++++++++++++++
  configs/bananapi_m4zero_defconfig             |  29 +++
- 5 files changed, 323 insertions(+)
+ 5 files changed, 336 insertions(+)
  create mode 100644 arch/arm/dts/sun50i-h618-bananapi-m4-zero.dts
  create mode 100644 arch/arm/dts/sun50i-h618-bananapi-m4.dtsi
  create mode 100644 configs/bananapi_m4zero_defconfig
@@ -32,13 +32,25 @@ index 2d931c23fc..05b37eee19 100644
  	sun50i-h618-orangepi-zero3.dtb \
  	sun50i-h618-transpeed-8k618-t.dtb \
 diff --git a/arch/arm/dts/sun50i-h616.dtsi b/arch/arm/dts/sun50i-h616.dtsi
-index 921d5f61d8..5ebec7530d 100644
+index 921d5f61d8..b25d2fbd82 100644
 --- a/arch/arm/dts/sun50i-h616.dtsi
 +++ b/arch/arm/dts/sun50i-h616.dtsi
-@@ -288,6 +288,12 @@
+@@ -288,6 +288,24 @@
  				function = "uart1";
  			};
  
++			/omit-if-no-ref/
++			uart4_pi_pins: uart4-pi-pins {
++				pins = "PI13", "PI14";
++				function = "uart4";
++			};
++
++			/omit-if-no-ref/
++			uart4_pi_rts_cts_pins: uart4-pi-rts-cts-pins {
++				pins = "PI15", "PI16";
++				function = "uart4";
++			};
++
 +			/omit-if-no-ref/
 +			uart5_ph_pins: uart5-ph-pins {
 +				pins = "PH2", "PH3";
@@ -50,10 +62,10 @@ index 921d5f61d8..5ebec7530d 100644
  				pins = "PG10";
 diff --git a/arch/arm/dts/sun50i-h618-bananapi-m4-zero.dts b/arch/arm/dts/sun50i-h618-bananapi-m4-zero.dts
 new file mode 100644
-index 0000000000..63c2fc567c
+index 0000000000..f50f9a4dc4
 --- /dev/null
 +++ b/arch/arm/dts/sun50i-h618-bananapi-m4-zero.dts
-@@ -0,0 +1,93 @@
+@@ -0,0 +1,78 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Copyright (c) 2024 Patrick Yavitz <pyavitz@gmail.com>
@@ -68,6 +80,7 @@ index 0000000000..63c2fc567c
 +	compatible = "sinovoip,bpi-m4-zero", "allwinner,sun50i-h618";
 +
 +	aliases {
++		mmc1 = &mmc2;
 +		serial5 = &uart5;
 +	};
 +
@@ -96,8 +109,9 @@ index 0000000000..63c2fc567c
 +	status = "disabled";
 +};
 +
++/* SDIO */
 +&mmc1 {
-+	status = "okay";
++	status = "disabled";
 +	bus-width = <4>;
 +	max-frequency = <100000000>;
 +
@@ -122,23 +136,6 @@ index 0000000000..63c2fc567c
 +	status = "okay";
 +};
 +
-+&uart1 {
-+	status = "okay";
-+	pinctrl-0 = <&uart1_pins>, <&uart1_rts_cts_pins>;
-+	pinctrl-names = "default";
-+	uart-has-rtscts;
-+
-+	bluetooth {
-+		compatible = "brcm,bcm43540-bt";
-+		host-wakeup-gpios = <&pio 6 16 GPIO_ACTIVE_HIGH>;
-+		device-wakeup-gpios = <&pio 6 17 GPIO_ACTIVE_HIGH>;
-+		shutdown-gpios = <&pio 6 19 GPIO_ACTIVE_HIGH>;
-+		max-speed = <1500000>;
-+		vbat-supply = <&reg_vcc3v3>;
-+		vddio-supply = <&reg_vcc1v8>;
-+	};
-+};
-+
 +&usbotg {
 +	status = "okay";
 +	dr_mode = "peripheral";
@@ -149,10 +146,10 @@ index 0000000000..63c2fc567c
 +};
 diff --git a/arch/arm/dts/sun50i-h618-bananapi-m4.dtsi b/arch/arm/dts/sun50i-h618-bananapi-m4.dtsi
 new file mode 100644
-index 0000000000..eb6ce9b27d
+index 0000000000..92c28ea9f7
 --- /dev/null
 +++ b/arch/arm/dts/sun50i-h618-bananapi-m4.dtsi
-@@ -0,0 +1,194 @@
+@@ -0,0 +1,210 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Copyright (c) 2024 Patrick Yavitz <pyavitz@gmail.com>
@@ -169,6 +166,8 @@ index 0000000000..eb6ce9b27d
 +
 +/ {
 +	aliases {
++		mmc0 = &mmc0;
++		mmc2 = &mmc1;
 +		serial0 = &uart0;
 +	};
 +
@@ -251,6 +250,7 @@ index 0000000000..eb6ce9b27d
 +	};
 +};
 +
++/* SD card */
 +&mmc0 {
 +	status = "okay";
 +	bus-width = <4>;
@@ -262,6 +262,7 @@ index 0000000000..eb6ce9b27d
 +	vmmc-supply = <&reg_vcc3v3>;
 +};
 +
++/* eMMC */
 +&mmc2 {
 +	status = "okay";
 +	bus-width = <8>;
@@ -339,6 +340,18 @@ index 0000000000..eb6ce9b27d
 +&uart0 {
 +	status = "okay";
 +	pinctrl-0 = <&uart0_ph_pins>;
++	pinctrl-names = "default";
++};
++
++&uart1 {
++	status = "disabled";
++	pinctrl-0 = <&uart1_pins>;
++	pinctrl-names = "default";
++};
++
++&uart4 {
++	status = "disabled";
++	pinctrl-0 = <&uart4_pi_pins>;
 +	pinctrl-names = "default";
 +};
 +
