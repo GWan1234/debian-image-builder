@@ -22,16 +22,24 @@ if test "${nvme_boot}" = true; then
 	fi
 fi
 
+# Load uconfig.txt
+if test -e ${devtype} ${devnum}:${distro_bootpart} uconfig.txt; then
+	setenv uconfig "uconfig.txt"
+elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/uconfig.txt; then
+	setenv uconfig "boot/uconfig.txt"
+fi
+echo "Loading ${uconfig} from ${devtype} ${devnum}:${distro_bootpart} ..."
+load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${uconfig}
+env import -t ${scriptaddr} ${filesize}
+
 # Set boot variables
 if test -e ${devtype} ${devnum}:${distro_bootpart} boot.scr; then
-	setenv uconfig "uconfig.txt"
 	setenv fk_kvers ${kernel}
 	setenv initrd ${initramfs}
 	setenv fdtdir ${fdtdir}
 	setenv user_overlay_dir user-overlays
 	part uuid ${devtype} ${devnum}:2 uuid
 elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/boot.scr; then
-	setenv uconfig "boot/uconfig.txt"
 	setenv fk_kvers boot/${kernel}
 	setenv initrd boot/${initramfs}
 	setenv fdtdir boot/${fdtdir}
@@ -39,14 +47,11 @@ elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/boot.scr; then
 	part uuid ${devtype} ${devnum}:1 uuid
 fi
 
-echo "Loading ${uconfig} from ${devtype} ${devnum}:${distro_bootpart} ..."
-load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${uconfig}
-env import -t ${scriptaddr} ${filesize}
-
 setenv bootargs "${console} rw root=PARTUUID=${uuid} ${rootfstype} ${verbose} fsck.repair=yes ${extra} rootwait"
 
 setenv loading ""
 ${loading} ${devtype} ${devnum}:${distro_bootpart} ${kernel_addr_r} ${fk_kvers} \
+&& echo "Loading ${fdtdir}/${fdtfile} ..." \
 && ${loading} ${devtype} ${devnum}:${distro_bootpart} ${fdt_addr_r} ${fdtdir}/${fdtfile} \
 && ${loading} ${devtype} ${devnum}:${distro_bootpart} ${ramdisk_addr_r} ${initrd}
 
