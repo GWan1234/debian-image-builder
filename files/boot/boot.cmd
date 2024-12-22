@@ -36,13 +36,13 @@ env import -t ${scriptaddr} ${filesize}
 if test -e ${devtype} ${devnum}:${distro_bootpart} boot.scr; then
 	setenv fk_kvers ${kernel}
 	setenv initrd ${initramfs}
-	setenv fdtdir ${fdtdir}
+	setenv fdtdir ${platform}
 	setenv user_overlay_dir user-overlays
 	part uuid ${devtype} ${devnum}:2 uuid
 elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/boot.scr; then
 	setenv fk_kvers boot/${kernel}
 	setenv initrd boot/${initramfs}
-	setenv fdtdir boot/${fdtdir}
+	setenv fdtdir boot/${platform}
 	setenv user_overlay_dir boot/user-overlays
 	part uuid ${devtype} ${devnum}:1 uuid
 fi

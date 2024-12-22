@@ -321,8 +321,8 @@ cat <<EOF > "${BOOT_PATH}/uconfig.txt"
 bootlabel=${DEFAULT_MOTD}
 console=${CONSOLE}
 extra=${EXTRA}
-fdtdir=${FAMILY}
 fdtfile=${DTB}.dtb
+platform=${FAMILY}
 verbose=${LOGLEVEL}
 
 # OVERLAYS
