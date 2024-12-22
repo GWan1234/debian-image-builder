@@ -80,7 +80,7 @@ index 0000000000..f50f9a4dc4
 +	compatible = "sinovoip,bpi-m4-zero", "allwinner,sun50i-h618";
 +
 +	aliases {
-+		mmc1 = &mmc2;
++		mmc2 = &mmc1;
 +		serial5 = &uart5;
 +	};
 +
@@ -167,7 +167,7 @@ index 0000000000..92c28ea9f7
 +/ {
 +	aliases {
 +		mmc0 = &mmc0;
-+		mmc2 = &mmc1;
++		mmc1 = &mmc2;
 +		serial0 = &uart0;
 +	};
 +
