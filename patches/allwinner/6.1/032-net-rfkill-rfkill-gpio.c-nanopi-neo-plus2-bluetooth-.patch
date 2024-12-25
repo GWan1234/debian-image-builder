@@ -1,16 +1,16 @@
-From ba2815a353ed4ec5e938b685600707858f150ebb Mon Sep 17 00:00:00 2001
-From: Patrick Yavitz <pyavitz@xxxxx.com>
-Date: Sun, 30 Jul 2023 10:16:15 -0400
+From c76fc35ce805c3404c992ac2da7aa08b73a9b786 Mon Sep 17 00:00:00 2001
+From: Patrick Yavitz <pyavitz@gmail.com>
+Date: Wed, 25 Dec 2024 04:46:24 -0500
 Subject: [PATCH] net: rfkill: rfkill-gpio.c: nanopi neo plus2 bluetooth
  suppoort
 
-Signed-off-by: Patrick Yavitz <pyavitz@xxxxx.com>
+Signed-off-by: Patrick Yavitz <pyavitz@gmail.com>
 ---
  net/rfkill/rfkill-gpio.c | 18 ++++++++++++++----
  1 file changed, 14 insertions(+), 4 deletions(-)
 
 diff --git a/net/rfkill/rfkill-gpio.c b/net/rfkill/rfkill-gpio.c
-index f5afc9bcdee6..ad18b12755f0 100644
+index 2df5bf240b64..2385419c27d1 100644
 --- a/net/rfkill/rfkill-gpio.c
 +++ b/net/rfkill/rfkill-gpio.c
 @@ -23,6 +23,7 @@ struct rfkill_gpio_data {
@@ -21,14 +21,16 @@ index f5afc9bcdee6..ad18b12755f0 100644
  	bool			clk_enabled;
  };
  
-@@ -31,13 +32,13 @@ static int rfkill_gpio_set_power(void *data, bool blocked)
+@@ -31,7 +32,7 @@ static int rfkill_gpio_set_power(void *data, bool blocked)
  	struct rfkill_gpio_data *rfkill = data;
  
- 	if (!blocked && !IS_ERR(rfkill->clk) && !rfkill->clk_enabled)
--		clk_enable(rfkill->clk);
-+		clk_prepare_enable(rfkill->clk);
+ 	if (!blocked && !IS_ERR(rfkill->clk) && !rfkill->clk_enabled) {
+-		int ret = clk_enable(rfkill->clk);
++		int ret = clk_prepare_enable(rfkill->clk);
  
- 	gpiod_set_value_cansleep(rfkill->shutdown_gpio, !blocked);
+ 		if (ret)
+ 			return ret;
+@@ -41,7 +42,7 @@ static int rfkill_gpio_set_power(void *data, bool blocked)
  	gpiod_set_value_cansleep(rfkill->reset_gpio, !blocked);
  
  	if (blocked && !IS_ERR(rfkill->clk) && rfkill->clk_enabled)
@@ -37,7 +39,7 @@ index f5afc9bcdee6..ad18b12755f0 100644
  
  	rfkill->clk_enabled = !blocked;
  
-@@ -82,8 +83,9 @@ static int rfkill_gpio_probe(struct platform_device *pdev)
+@@ -86,8 +87,9 @@ static int rfkill_gpio_probe(struct platform_device *pdev)
  	if (!rfkill)
  		return -ENOMEM;
  
@@ -49,7 +51,7 @@ index f5afc9bcdee6..ad18b12755f0 100644
  
  	if (!rfkill->name)
  		rfkill->name = dev_name(&pdev->dev);
-@@ -97,6 +99,9 @@ static int rfkill_gpio_probe(struct platform_device *pdev)
+@@ -101,6 +103,9 @@ static int rfkill_gpio_probe(struct platform_device *pdev)
  	}
  
  	rfkill->clk = devm_clk_get(&pdev->dev, NULL);
@@ -57,9 +59,9 @@ index f5afc9bcdee6..ad18b12755f0 100644
 +		clk_set_rate(rfkill->clk, rfkill->clk_frequency); 
 +	}
  
- 	gpio = devm_gpiod_get_optional(&pdev->dev, "reset", GPIOD_OUT_LOW);
+ 	gpio = devm_gpiod_get_optional(&pdev->dev, "reset", GPIOD_ASIS);
  	if (IS_ERR(gpio))
-@@ -156,6 +161,10 @@ static const struct acpi_device_id rfkill_acpi_match[] = {
+@@ -168,6 +173,10 @@ static const struct acpi_device_id rfkill_acpi_match[] = {
  };
  MODULE_DEVICE_TABLE(acpi, rfkill_acpi_match);
  #endif
@@ -70,7 +72,7 @@ index f5afc9bcdee6..ad18b12755f0 100644
  
  static struct platform_driver rfkill_gpio_driver = {
  	.probe = rfkill_gpio_probe,
-@@ -163,6 +172,7 @@ static struct platform_driver rfkill_gpio_driver = {
+@@ -175,6 +184,7 @@ static struct platform_driver rfkill_gpio_driver = {
  	.driver = {
  		.name = "rfkill_gpio",
  		.acpi_match_table = ACPI_PTR(rfkill_acpi_match),
@@ -79,5 +81,5 @@ index f5afc9bcdee6..ad18b12755f0 100644
  };
  
 -- 
-2.39.2
+2.39.5
 
