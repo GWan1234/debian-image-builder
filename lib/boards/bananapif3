@@ -55,7 +55,7 @@ MODULES_LOAD="8852bs"
 
 # opensbi firmware
 OPENSBI_URL="https://gitee.com/bianbu-linux/opensbi.git"
-OPENSBI_TAG="bl-v2.0.y"
+OPENSBI_TAG="v2.0.4" # tag or branch
 OPENSBI_PLATFORM="generic"
 OPENSBI_DEFCONFIG="k1_defconfig"
 OPENSBI_FIRMWARE="build/platform/${OPENSBI_PLATFORM}/firmware/fw_dynamic.itb"
@@ -91,8 +91,8 @@ GIT_BLOB="blob"
 GIT_PATCHING="true"
 GIT_PATCHDIR="patches/git/${BOARD}/${GIT_REPO}-${GIT_BRANCH}"
 # u-boot (if variable not found ignore)
-GIT_UBOOT_TAG="v2.0.1" # tag or branch
-GIT_UBOOT_URL="https://gitee.com/bianbu-linux/uboot-2022.10.git -b ${GIT_UBOOT_TAG} ${BOARD}-u-boot"
+GIT_UBOOT_TAG="v2.0.4" # tag or branch
+GIT_UBOOT_URL="https://gitee.com/bianbu-linux/uboot-2022.10.git -b ${GIT_UBOOT_TAG} ${BOARD}-u-boot-${GIT_UBOOT_TAG}"
 
 # override userdata file
 FORCE_VERSION="true"
