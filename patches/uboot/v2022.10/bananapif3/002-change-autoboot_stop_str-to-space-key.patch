@@ -4,7 +4,7 @@ Date: Thu, 11 Jul 2024 07:37:18 -0400
 Subject: [PATCH] change AUTOBOOT_STOP_STR to Space KEY
 
 Signed-off-by: Banana Pi -BPI <lionwang@sinovoip.com.cn>
-Signed-off-by: Patrick Yavitz <pyavitz@xxxxx.com>
+Signed-off-by: Patrick Yavitz <pyavitz@gmail.com>
 ---
  configs/k1_defconfig | 7 +++++--
  1 file changed, 5 insertions(+), 2 deletions(-)
