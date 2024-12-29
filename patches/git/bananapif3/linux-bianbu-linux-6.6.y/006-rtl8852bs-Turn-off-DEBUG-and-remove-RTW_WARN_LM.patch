@@ -1,9 +1,9 @@
 From d77e410afa4ee896a00335f268f37b59c6f44ea1 Mon Sep 17 00:00:00 2001
-From: Patrick Yavitz <pyavitz@armbian.com>
+From: Patrick Yavitz <pyavitz@gmail.com>
 Date: Sat, 17 Aug 2024 11:49:20 -0400
 Subject: [PATCH] rtl8852bs: Turn off DEBUG and remove RTW_WARN_LM
 
-Signed-off-by: Patrick Yavitz <pyavitz@armbian.com>
+Signed-off-by: Patrick Yavitz <pyavitz@gmail.com>
 ---
  drivers/net/wireless/realtek/rtl8852bs/Makefile        | 2 +-
  drivers/net/wireless/realtek/rtl8852bs/core/rtw_xmit.c | 2 +-

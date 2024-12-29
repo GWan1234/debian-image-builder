@@ -1,11 +1,11 @@
 From 7eb5bc56252e488c43531b197ff093be14361c8a Mon Sep 17 00:00:00 2001
-From: Patrick Yavitz <pyavitz@xxxxx.com>
+From: Patrick Yavitz <pyavitz@gmail.com>
 Date: Tue, 12 Sep 2023 01:42:16 -0400
 Subject: [PATCH] scripts: Makefile.package: PHONY += intdeb-pkg
 
 This is required by the builders builddeb kernel packaging script.
 
-Signed-off-by: Patrick Yavitz <pyavitz@xxxxx.com>
+Signed-off-by: Patrick Yavitz <pyavitz@gmail.com>
 ---
  scripts/Makefile.package | 4 ++++
  1 file changed, 4 insertions(+)

@@ -1,9 +1,9 @@
 From 2ccecdeaa2fad8f9fd9d828e18c04c3ce2d21197 Mon Sep 17 00:00:00 2001
-From: Patrick Yavitz <pyavitz@xxxxx.com>
+From: Patrick Yavitz <pyavitz@gmail.com>
 Date: Wed, 3 Apr 2024 09:41:49 -0400
 Subject: [PATCH] device tree overlay support
 
-Signed-off-by: Patrick Yavitz <pyavitz@xxxxx.com>
+Signed-off-by: Patrick Yavitz <pyavitz@gmail.com>
 ---
  scripts/Makefile.lib | 18 ++++++++++++++++++
  1 file changed, 18 insertions(+)
