@@ -2,11 +2,6 @@
 
 # DOWNLOAD
 download_fip (){
-# check for old method of dealing with fips and remove it
-if [[ -f "amlogic-boot-fip-master.sha256" ]]; then rm -f amlogic-boot-fip-master.sha256; fi
-if [[ -f "amlogic-boot-fip-master.tar.gz" ]]; then rm -f amlogic-boot-fip-master.tar.gz; fi
-if [[ -d "amlogic-boot-fip-master" ]]; then rm -fdr amlogic-boot-fip-master; fi
-# git clone or pull
 if [[ -d "amlogic-boot-fip" ]]; then
 	echo -en "${WHT}Firmware Image Package${FIN} "
 	echo -en "${PNK}[${FIN}${YLW}found${FIN}${PNK}]${FIN} "
@@ -24,7 +19,7 @@ else
 		echo_bdone
 	else
 		echo -e "${PNK}[${FIN}${RED}failed${FIN}${PNK}]${FIN}"
-		exit 0
+		exit 1
 	fi
 fi
 }
