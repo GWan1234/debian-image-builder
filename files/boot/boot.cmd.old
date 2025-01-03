@@ -47,27 +47,32 @@ elif test -e ${devtype} ${devnum}:${distro_bootpart} boot/boot.scr; then
 	part uuid ${devtype} ${devnum}:1 uuid
 fi
 
-setenv bootargs "${console} rw root=PARTUUID=${uuid} ${rootfstype} ${verbose} fsck.repair=yes ${extra} rootwait init=/sbin/init"
+setenv bootargs "${console} rw root=PARTUUID=${uuid} ${rootfstype} ${verbose} fsck.repair=yes ${extra} rootwait"
 
 setenv loading ""
-&& ${loading} ${devtype} ${devnum}:${distro_bootpart} ${ramdisk_addr_r} ${initrd}
 ${loading} ${devtype} ${devnum}:${distro_bootpart} ${kernel_addr_r} ${fk_kvers} \
 && echo "Loading ${fdtdir}/${fdtfile} ..." \
-&& ${loading} ${devtype} ${devnum}:${distro_bootpart} ${fdt_addr_r} ${fdtdir}/${fdtfile}
+&& ${loading} ${devtype} ${devnum}:${distro_bootpart} ${fdt_addr_r} ${fdtdir}/${fdtfile} \
+&& ${loading} ${devtype} ${devnum}:${distro_bootpart} ${ramdisk_addr_r} ${initrd}
 
-fdt addr ${fdt_addr_r}
-fdt resize 65536
-if test -n ${overlays}; then
-	for dtoverlay in ${overlays}; do
-		echo "Applying ${dtoverlay} ..."
-		load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${fdtdir}/overlays/${dtoverlay}.dtbo && fdt apply ${scriptaddr}
-	done
-fi
-if test -n ${user_overlays}; then
-	for dtoverlay in ${user_overlays}; do
-		echo "Applying ${dtoverlay} ..."
-		load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${user_overlay_dir}/${dtoverlay}.dtbo && fdt apply ${scriptaddr}
-	done
+if test -e ${devtype} ${devnum}:${distro_bootpart} ${uconfig}; then
+	fdt addr ${fdt_addr_r}
+	fdt resize 8192
+	setexpr fdtovaddr ${fdt_addr_r} + ${fdtoverlay_addr_r}
+	if load ${devtype} ${devnum}:${distro_bootpart} ${fdtovaddr} ${uconfig} \
+		&& env import -t ${fdtovaddr} ${filesize} && test -n ${overlays}; then
+		for dtoverlay in ${overlays}; do
+			echo "Applying ${dtoverlay} ..."
+			load ${devtype} ${devnum}:${distro_bootpart} ${fdtovaddr} ${fdtdir}/overlays/${dtoverlay}.dtbo && fdt apply ${fdtovaddr}
+		done
+	fi
+	if load ${devtype} ${devnum}:${distro_bootpart} ${fdtovaddr} ${uconfig} \
+		&& env import -t ${fdtovaddr} ${filesize} && test -n ${user_overlays}; then
+		for dtoverlay in ${user_overlays}; do
+			echo "Applying ${dtoverlay} ..."
+			load ${devtype} ${devnum}:${distro_bootpart} ${fdtovaddr} ${user_overlay_dir}/${dtoverlay}.dtbo && fdt apply ${fdtovaddr}
+		done
+	fi
 fi
 
 echo "Booting $bootlabel from ${devtype} ${devnum}:${distro_bootpart} ..." \
