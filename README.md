@@ -6,14 +6,13 @@
 
 # ALLWINNER
 BananaPi M2 Zero (*)
-BananaPi M4 Zero (*)
+BananaPi M4 Zero
 BananaPi P2 Zero (*)
 Cubietruck (*)
 NanoPi M1
 NanoPi NEO
 NanoPi NEO Plus2
 NanoPi R1
-OrangePi 3 (*)
 OrangePi 3 LTS (*)
 OrangePi One
 OrangePi PC
@@ -49,12 +48,15 @@ Rock 5B	(*)
 
 # SAMSUNG
 Odroid XU4
+
+# SPACEMIT
+BananaPi BPI-F3
 ```
 </details>
 
 ### Host dependencies for Debian Bookworm and Ubuntu Jammy Jellyfish / Noble Numbat
-* **Debian Bookworm** (testing) (arm arm64)
-* **Ubuntu Jammy Jellyfish** (recommended) (arm arm64)
+* **Debian Bookworm** (arm arm64)
+* **Ubuntu Jammy Jellyfish** (arm arm64)
 * **Ubuntu Noble Numbat** (recommended) (arm arm64 riscv)
 
 **Install options:**
