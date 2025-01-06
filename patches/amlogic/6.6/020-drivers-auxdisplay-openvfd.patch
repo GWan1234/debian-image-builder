@@ -1,12 +1,12 @@
 From f070d9ddb2d4c97262f96d7c39bb821e3859c55c Mon Sep 17 00:00:00 2001
-From: Patrick Yavitz <pyavitz@xxxxx.com>
+From: Patrick Yavitz <pyavitz@gmail.com>
 Date: Mon, 24 Jul 2023 12:45:33 -0400
 Subject: [PATCH] drivers: auxdisplay: openvfd: vacuum fluorescent display
 
-Linux 6.4.y support
+Linux 6.6.y support
 source: https://github.com/arthur-liberman/linux_openvfd
 
-Signed-off-by: Patrick Yavitz <pyavitz@xxxxx.com>
+Signed-off-by: Patrick Yavitz <pyavitz@gmail.com>
 ---
  drivers/auxdisplay/Kconfig                    |   24 +
  drivers/auxdisplay/Makefile                   |    1 +
