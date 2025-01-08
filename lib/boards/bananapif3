@@ -106,3 +106,6 @@ PLATFORM="${FAMILY}"
 # kernel package name (if shared patching set to true)
 COMMON_PKG="true"
 COMMON_PKGNAME="spacemit"
+
+# set for builddeb to package a specific kernel image
+KERNEL_IMAGE="Image.itb"

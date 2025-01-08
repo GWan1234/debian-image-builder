@@ -15,8 +15,8 @@ else
 fi
 # kernel image
 if [[ "$ARCH" == "arm" ]]; then KIMAGE="zImage"; fi
-if [[ "$ARCH" == "arm64" ]]; then KIMAGE="Image"; fi
-if [[ "$ARCH" == "riscv" ]]; then KIMAGE="Image.itb"; fi
+if [[ "$ARCH" =~ ^(arm64|riscv)$ ]]; then KIMAGE="Image"; fi
+if [[ -v "KERNEL_IMAGE" ]] && [[ ! -z "$KERNEL_IMAGE" ]]; then KIMAGE="${KERNEL_IMAGE}"; fi
 # install target
 if [[ "$ARCH" == "arm" ]]; then LINUX_PATH="usr/lib/${LINUX_IMAGE}"; fi
 if [[ "$ARCH" =~ ^(arm64|riscv)$ ]]; then LINUX_PATH="usr/lib/${LINUX_IMAGE}/${PLATFORM}"; fi
