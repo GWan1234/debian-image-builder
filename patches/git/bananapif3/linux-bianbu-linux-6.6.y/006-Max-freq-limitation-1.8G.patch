@@ -1,0 +1,50 @@
+From 7954ac9fbc06d165636f89a84676da70b506d370 Mon Sep 17 00:00:00 2001
+From: Patrick Yavitz <pyavitz@gmail.com>
+Date: Thu, 9 Jan 2025 09:44:41 -0500
+Subject: [PATCH] Max freq limitation 1800000
+
+Signed-off-by: Patrick Yavitz <pyavitz@gmail.com>
+---
+ drivers/cpufreq/spacemit-cpufreq.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/cpufreq/spacemit-cpufreq.c b/drivers/cpufreq/spacemit-cpufreq.c
+index 745844e9d2b2..23875e092503 100644
+--- a/drivers/cpufreq/spacemit-cpufreq.c
++++ b/drivers/cpufreq/spacemit-cpufreq.c
+@@ -49,7 +49,7 @@ of_hotplug_cooling_register(struct cpufreq_policy *policy);
+ #define FILTER_POINTS_0			(135)
+ #define FILTER_POINTS_1			(142)
+ 
+-#define K1_MAX_FREQ_LIMITATION		(1600000)
++#define K1_MAX_FREQ_LIMITATION		(1800000)
+ #define M1_MAX_FREQ_LIMITATION		(1800000)
+ 
+ #endif
+@@ -433,11 +433,8 @@ int spacmeit_cpufreq_veritfy(struct cpufreq_policy_data *policy)
+ 		cpufreq_verify_within_limits(policy, policy->cpuinfo.min_freq,
+ 					policy->cpuinfo.max_freq);
+ 	} else {
+-		/* K1 */
+-		/* only 1.6G allowed max */
+-		policy->max = policy->max > K1_MAX_FREQ_LIMITATION ? K1_MAX_FREQ_LIMITATION : policy->max;
+ 		cpufreq_verify_within_limits(policy, policy->cpuinfo.min_freq,
+-					K1_MAX_FREQ_LIMITATION);
++					policy->cpuinfo.max_freq);
+ 	}
+ 
+ 	cpufreq_for_each_valid_entry(pos, policy->freq_table) {
+@@ -471,8 +468,8 @@ void spacemit_cpufreq_ready(struct cpufreq_policy *policy)
+ 		/* M1 */
+ 	} else {
+ 		/* K1 or other */
+-		remove_policy_boost_sysfs_file(policy);
+-		remove_boost_sysfs_file();
++		//remove_policy_boost_sysfs_file(policy);
++		//remove_boost_sysfs_file();
+ 	}
+ }
+ 
+-- 
+2.39.5
+
