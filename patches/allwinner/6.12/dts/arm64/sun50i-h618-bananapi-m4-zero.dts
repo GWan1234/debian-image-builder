@@ -17,6 +17,7 @@
 		i2c1 = &i2c1;
 		i2c3 = &i2c3;
 		i2c4 = &i2c4;
+		serial1 = &uart1;
 		serial4 = &uart4;
 		serial5 = &uart5;
 		spi1 = &spi1;
