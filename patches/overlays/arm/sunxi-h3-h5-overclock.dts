@@ -3,7 +3,7 @@
 
 / {
 	/* if the board is actually regulated this will not work */
-	compatible = "allwinner,sun8i-h3", "allwinner,sun50i-h5";
+	compatible = "allwinner,sun8i-h2-plus", "allwinner,sun8i-h3", "allwinner,sun50i-h5";
 	
 	fragment@0 {
 		target-path = "/opp-table-cpu";

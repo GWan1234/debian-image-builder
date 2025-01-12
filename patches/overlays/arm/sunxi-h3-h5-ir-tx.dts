@@ -2,7 +2,7 @@
 /plugin/;
 
 / {
-	compatible = "allwinner,sun8i-h3", "allwinner,sun50i-h5";
+	compatible = "allwinner,sun8i-h2-plus", "allwinner,sun8i-h3", "allwinner,sun50i-h5";
 
 	/*
 	 * This fragment is needed only for the internal pull-up activation,

@@ -7,7 +7,7 @@
 	fragment@0 {
 		target = <&usb_otg>;
 		__overlay__ {
-			dr_mode = "host";
+			dr_mode = "peripheral";
 		};
 	};
 };

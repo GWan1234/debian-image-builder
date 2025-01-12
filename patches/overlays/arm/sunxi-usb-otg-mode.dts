@@ -2,8 +2,10 @@
 /plugin/;
 
 / {
+	compatible = "allwinner,sun8i-h2-plus", "allwinner,sun8i-h3";
+
 	fragment@0 {
-		target = <&usbotg>;
+		target = <&usb_otg>;
 		__overlay__ {
 			dr_mode = "otg";
 		};
