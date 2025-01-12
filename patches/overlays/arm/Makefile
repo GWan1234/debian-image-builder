@@ -10,17 +10,17 @@ dtbo-$(CONFIG_ARCH_EXYNOS) += \
 	exynos5422-odroidxu4-uart0.dtbo
 
 dtbo-$(CONFIG_ARCH_SUNXI) += \
-	sun8i-h3-i2c0.dtbo \
-	sun8i-h3-i2c1.dtbo \
-	sun8i-h3-i2c2.dtbo \
-	sun8i-h3-spi-add-cs1.dtbo \
-	sun8i-h3-spi-jedec-nor.dtbo \
-	sun8i-h3-spi-spidev.dtbo \
-	sun8i-h3-uart1.dtbo \
-	sun8i-h3-uart2.dtbo \
-	sun8i-h3-uart3.dtbo \
-	sunxi-h3-h5-ir-tx.dtbo \
-	sunxi-h3-h5-overclock.dtbo \
+	sunxi-i2c0.dtbo \
+	sunxi-i2c1.dtbo \
+	sunxi-i2c2.dtbo \
+	sunxi-spi-add-cs1.dtbo \
+	sunxi-spi-jedec-nor.dtbo \
+	sunxi-spi-spidev.dtbo \
+	sunxi-uart1.dtbo \
+	sunxi-uart2.dtbo \
+	sunxi-uart3.dtbo \
+	sunxi-ir-tx.dtbo \
+	sunxi-overclock.dtbo \
 	sunxi-usb-host-mode.dtbo \
 	sunxi-usb-otg-mode.dtbo \
 	sunxi-usb-peripheral-mode.dtbo
