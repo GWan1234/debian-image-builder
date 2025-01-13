@@ -1,14 +1,14 @@
-From 3af7d0bf0bde6a7b52162e4557f826375320b415 Mon Sep 17 00:00:00 2001
+From a76a3e111a79d88f85ef1a758c7e67678afa67a1 Mon Sep 17 00:00:00 2001
 From: Patrick Yavitz <pyavitz@gmail.com>
-Date: Sun, 12 Jan 2025 20:00:27 -0500
+Date: Sun, 12 Jan 2025 20:18:42 -0500
 Subject: [PATCH] Add board BananaPi BPI-P2-Zero and BPI-M2-Zero mods
 
 Signed-off-by: Patrick Yavitz <pyavitz@gmail.com>
 ---
  arch/arm/boot/dts/allwinner/Makefile          |   1 +
- .../sun8i-h2-plus-bananapi-m2-zero.dts        |  12 +-
+ .../sun8i-h2-plus-bananapi-m2-zero.dts        |  20 +-
  .../sun8i-h2-plus-bananapi-p2-zero.dts        | 302 ++++++++++++++++++
- 3 files changed, 313 insertions(+), 2 deletions(-)
+ 3 files changed, 318 insertions(+), 5 deletions(-)
  create mode 100644 arch/arm/boot/dts/allwinner/sun8i-h2-plus-bananapi-p2-zero.dts
 
 diff --git a/arch/arm/boot/dts/allwinner/Makefile b/arch/arm/boot/dts/allwinner/Makefile
@@ -24,11 +24,14 @@ index 296be33ec934..b8df13325e90 100644
  	sun8i-h2-plus-orangepi-r1.dtb \
  	sun8i-h2-plus-orangepi-zero.dtb \
 diff --git a/arch/arm/boot/dts/allwinner/sun8i-h2-plus-bananapi-m2-zero.dts b/arch/arm/boot/dts/allwinner/sun8i-h2-plus-bananapi-m2-zero.dts
-index d729b7c705db..2864519f398f 100644
+index d729b7c705db..99f982f6569f 100644
 --- a/arch/arm/boot/dts/allwinner/sun8i-h2-plus-bananapi-m2-zero.dts
 +++ b/arch/arm/boot/dts/allwinner/sun8i-h2-plus-bananapi-m2-zero.dts
-@@ -14,7 +14,7 @@
+@@ -12,9 +12,10 @@
+ 
+ #include <dt-bindings/gpio/gpio.h>
  #include <dt-bindings/input/input.h>
+++#include <dt-bindings/leds/common.h>
  
  / {
 -	model = "Banana Pi BPI-M2-Zero";
@@ -36,7 +39,22 @@ index d729b7c705db..2864519f398f 100644
  	compatible = "sinovoip,bpi-m2-zero", "allwinner,sun8i-h2-plus";
  
  	aliases {
-@@ -133,6 +133,10 @@ hdmi_out_con: endpoint {
+@@ -40,10 +41,11 @@ hdmi_con_in: endpoint {
+ 	leds {
+ 		compatible = "gpio-leds";
+ 
+-		pwr_led {
+-			label = "bananapi-m2-zero:red:pwr";
++		led-0 {
++			color = <LED_COLOR_ID_RED>;
++			function = LED_FUNCTION_STATUS;
+ 			gpios = <&r_pio 0 10 GPIO_ACTIVE_LOW>; /* PL10 */
+-			default-state = "on";
++			linux,default-trigger = "heartbeat";
+ 		};
+ 	};
+ 
+@@ -133,6 +135,10 @@ hdmi_out_con: endpoint {
  	};
  };
  
@@ -47,7 +65,7 @@ index d729b7c705db..2864519f398f 100644
  &mmc0 {
  	vmmc-supply = <&reg_vcc3v3>;
  	bus-width = <4>;
-@@ -256,8 +260,12 @@ &r_pio {
+@@ -256,8 +262,12 @@ &r_pio {
  		"", "", "", "", "", "", "", "";
  };
  

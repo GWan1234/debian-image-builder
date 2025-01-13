@@ -1,14 +1,14 @@
-From 21f509d71f72c791cd9e0aec2bc7ff62301c49ff Mon Sep 17 00:00:00 2001
+From 7261dec7aa5460169ae5feb9046ba39f05ca3f26 Mon Sep 17 00:00:00 2001
 From: Patrick Yavitz <pyavitz@gmail.com>
-Date: Sun, 12 Jan 2025 20:05:38 -0500
+Date: Sun, 12 Jan 2025 20:15:18 -0500
 Subject: [PATCH] Add board BananaPi BPI-P2-Zero and BPI-M2-Zero mods
 
 Signed-off-by: Patrick Yavitz <pyavitz@gmail.com>
 ---
  arch/arm/boot/dts/Makefile                    |   1 +
- .../dts/sun8i-h2-plus-bananapi-m2-zero.dts    |  12 +-
+ .../dts/sun8i-h2-plus-bananapi-m2-zero.dts    |  20 +-
  .../dts/sun8i-h2-plus-bananapi-p2-zero.dts    | 302 ++++++++++++++++++
- 3 files changed, 313 insertions(+), 2 deletions(-)
+ 3 files changed, 318 insertions(+), 5 deletions(-)
  create mode 100644 arch/arm/boot/dts/sun8i-h2-plus-bananapi-p2-zero.dts
 
 diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
@@ -24,11 +24,14 @@ index df6d905eeb87..06491b9b8f93 100644
  	sun8i-h2-plus-orangepi-r1.dtb \
  	sun8i-h2-plus-orangepi-zero.dtb \
 diff --git a/arch/arm/boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts b/arch/arm/boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts
-index d729b7c705db..2864519f398f 100644
+index d729b7c705db..cc1694fea8cc 100644
 --- a/arch/arm/boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts
 +++ b/arch/arm/boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts
-@@ -14,7 +14,7 @@
+@@ -12,9 +12,10 @@
+ 
+ #include <dt-bindings/gpio/gpio.h>
  #include <dt-bindings/input/input.h>
++#include <dt-bindings/leds/common.h>
  
  / {
 -	model = "Banana Pi BPI-M2-Zero";
@@ -36,7 +39,22 @@ index d729b7c705db..2864519f398f 100644
  	compatible = "sinovoip,bpi-m2-zero", "allwinner,sun8i-h2-plus";
  
  	aliases {
-@@ -133,6 +133,10 @@ hdmi_out_con: endpoint {
+@@ -40,10 +41,11 @@ hdmi_con_in: endpoint {
+ 	leds {
+ 		compatible = "gpio-leds";
+ 
+-		pwr_led {
+-			label = "bananapi-m2-zero:red:pwr";
++		led-0 {
++			color = <LED_COLOR_ID_RED>;
++			function = LED_FUNCTION_STATUS;
+ 			gpios = <&r_pio 0 10 GPIO_ACTIVE_LOW>; /* PL10 */
+-			default-state = "on";
++			linux,default-trigger = "heartbeat";
+ 		};
+ 	};
+ 
+@@ -133,6 +135,10 @@ hdmi_out_con: endpoint {
  	};
  };
  
@@ -47,7 +65,7 @@ index d729b7c705db..2864519f398f 100644
  &mmc0 {
  	vmmc-supply = <&reg_vcc3v3>;
  	bus-width = <4>;
-@@ -256,8 +260,12 @@ &r_pio {
+@@ -256,8 +262,12 @@ &r_pio {
  		"", "", "", "", "", "", "", "";
  };
  
