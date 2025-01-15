@@ -260,14 +260,14 @@ odroid_bootcmd (){
 rm -f p1/{boot.cmd,config.ini}
 VENDOR_KERNEL=`sed 's/INSTALLED_KERNEL="//g' kernel.release | grep -o '^...'`
 if [[ "$VENDOR_KERNEL" == "4.9" ]]; then
-	cp files/boot/odroid/${FAMILY_EXT}-vendor-boot.cmd p1/boot.cmd;
-	cp files/boot/odroid/${FAMILY_EXT}-vendor-config.ini p1/config.ini;
+	cp files/boot/scripts/${FAMILY_EXT}-vendor-boot.cmd p1/boot.cmd;
+	cp files/boot/scripts/${FAMILY_EXT}-vendor-config.ini p1/config.ini;
 else
-	cp files/boot/odroid/${FAMILY_EXT}-boot.cmd p1/boot.cmd;
-	cp files/boot/odroid/${FAMILY_EXT}-config.ini p1/config.ini;
+	cp files/boot/scripts/${FAMILY_EXT}-boot.cmd p1/boot.cmd;
+	cp files/boot/scripts/${FAMILY_EXT}-config.ini p1/config.ini;
 fi
-if [[ -f "files/boot/odroid/odroid-boot-logo.bmp.gz" ]]; then
-	cp files/boot/odroid/odroid-boot-logo.bmp.gz p1/boot-logo.bmp.gz;
+if [[ -f "files/boot/scripts/odroid-boot-logo.bmp.gz" ]]; then
+	cp files/boot/scripts/odroid-boot-logo.bmp.gz p1/boot-logo.bmp.gz;
 fi
 if [[ -f "p1/config.ini" ]]; then
 	sed -i "s/uuid=PARTUUID=/uuid=PARTUUID=${ROOT_PARTUUID}/g" p1/config.ini;
@@ -278,14 +278,14 @@ if [[ -f "p1/config.ini" ]]; then
 		sed -i 's/rootfstype=/rootfstype="'"${ROOT_FSTYPE}"'"/g' p1/config.ini;
 	fi
 	sed -i "s/fdtfile=/fdtfile=${DTB}.dtb/g" p1/config.ini;
-	mkimage -C none -A arm -T script -d p1/boot.cmd p1/boot.scr;
+	mkimage -C none -A ${ARCH} -T script -d p1/boot.cmd p1/boot.scr;
 fi
 }
 
 # odroid c1
 odroid_bootini (){
 rm -f p1/boot.ini
-cp -f files/boot/odroid/${BOARD}-boot.ini p1/boot.ini
+cp -f files/boot/scripts/${BOARD}-boot.ini p1/boot.ini
 sed -i "s/root=PARTUUID=/root=PARTUUID=${ROOT_PARTUUID}/g" p1/boot.ini
 sed -i "s/rootfstype=/${ROOT_FSTYPE}/g" p1/boot.ini
 tee --append p1/boot.ini <<EOF
@@ -302,7 +302,7 @@ bootcmd (){
 echo -en "$BOARD: "; echo -e "Installing boot script ..."
 if [[ "$P_VALUE" == "p1" ]]; then BOOT_PATH="p1/boot"; else BOOT_PATH="p1"; fi
 rm -f ${BOOT_PATH}/{boot.cmd,boot.scr}
-cp -f files/boot/boot.cmd ${BOOT_PATH}/
+cp -f files/boot/scripts/boot.cmd ${BOOT_PATH}/
 sed -i 's/^setenv rootfstype "".*/setenv rootfstype "'"${ROOT_FSTYPE}"'"/g' ${BOOT_PATH}/boot.cmd
 sed -i 's/^setenv kernel "".*/setenv kernel "'"${BOOT_KERNEL}"'"/g' ${BOOT_PATH}/boot.cmd
 sed -i 's/^setenv initramfs "".*/setenv initramfs "'"${BOOT_INITRD}"'"/g' ${BOOT_PATH}/boot.cmd

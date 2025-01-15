@@ -27,7 +27,7 @@ IMAGE_FOLDER="img/"
 USB_BOOT_IMAGE="${DTB}-usb-boot.img"
 BOOT_LABEL="BOOT"
 BOOTFS="mkfs -t vfat -n"
-BOOT_SCRIPT="files/boot/usbboot.cmd"
+BOOT_SCRIPT="files/boot/scripts/usbboot.cmd"
 if [[ -f "$USB_BOOT_IMAGE" ]]; then rm -f $USB_BOOT_IMAGE; fi
 echo -en "${FAMILY}: " | sed -e 's/\(.*\)/\U\1/'
 echo -e "${DEFAULT_MOTD}" | sed -e 's/\(.*\)/\U\1/'
