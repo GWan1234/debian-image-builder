@@ -206,7 +206,7 @@ user_patches
 if [[ `find . -name '*.orig'` ]]; then find . -name '*.orig' -delete; fi
 if [[ `find . -name '*.rej'` ]]; then find . -name '*.rej' -delete; fi
 # add dtclist initrd and headers-byteshift.patch
-if [[ -f "../../dtclist.txt" ]] && [[ -f "../../packaging/headers-byteshift.patch" ]] && [[ -f "../../packaging/initrd.${ARCH}" ]]; then
+if [[ -f "../../dtclist.txt" ]] && [[ -f "../../packaging/headers-byteshift.patch" ]] && [[ -f "../../packaging/initrd" ]]; then
 	mv ../../dtclist.txt dtclist.txt
 	cp -f ../../packaging/headers-byteshift.patch .
 	cp -f ../../packaging/initrd .
