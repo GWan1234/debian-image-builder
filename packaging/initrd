@@ -1,7 +1,8 @@
 #!/bin/bash
 
-UINITRD="/boot/uInitrd"
+ARCH=""
 INITRD="/boot/initrd.gz"
+UINITRD="/boot/uInitrd"
 
 failed (){
 echo >&2 "Error: $@"
@@ -15,13 +16,13 @@ if [[ -d "/boot" ]] && [[ `ls  /boot/initrd.img-*` ]] > /dev/null 2>&1; then
 	cp -f /boot/initrd.img-* ${INITRD}
 fi
 
-if [[ -f "${UINITRD}" ]]; then rm -f ${UINITRD}; fi
 if [ "$#" -eq 2 ]; then
 	if [ ! -z "$1" ] && [ -f "$2" ]; then
 		NAME="initramfs-$1"
 		FILE="$2"
 		echo "update-initramfs: Generating ${UINITRD}"
-		mkimage -A arm -O linux -T ramdisk -C gzip -a 0x00000000 -e 0x00000000 -n ${NAME} -d ${FILE} ${UINITRD}
+		rm -f ${UINITRD}
+		mkimage -A ${ARCH} -O linux -T ramdisk -C gzip -a 0x00000000 -e 0x00000000 -n ${NAME} -d ${FILE} ${UINITRD}
 	else
 		failed
 	fi
