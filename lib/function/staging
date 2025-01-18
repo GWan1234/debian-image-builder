@@ -189,41 +189,43 @@ fi
 
 board_information (){
 BOARD_DEST="${P_VALUE}/etc/opt/board.txt"
-echo "# architecture" > "${BOARD_DEST}"
-echo ARCH='"'$ARCH'"' >> "${BOARD_DEST}"
-echo ARCH_EXT='"'$ARCH_EXT'"' >> "${BOARD_DEST}"
-echo CROSS_COMPILE='"'$CROSS_COMPILE'"' >> "${BOARD_DEST}"
-echo "" >> "${BOARD_DEST}"
-echo "# device information" >> "${BOARD_DEST}"
-echo BOARD='"'$BOARD'"' >> "${BOARD_DEST}"
-echo SERIES='"'$SERIES'"' >> "${BOARD_DEST}"
-echo FAMILY='"'$FAMILY'"' >> "${BOARD_DEST}"
-echo FAMILY_EXT='"'$FAMILY_EXT'"' >> "${BOARD_DEST}"
-echo DTB='"'$DTB'"' >> "${BOARD_DEST}"
-echo "" >> "${BOARD_DEST}"
-echo "# partition scheme" >> "${BOARD_DEST}"
-echo GPT='"'$GPT'"' >> "${BOARD_DEST}"
-echo EFI='"'$EFI'"' >> "${BOARD_DEST}"
-echo VFAT='"'$VFAT'"' >> "${BOARD_DEST}"
-echo P_VALUE='"'$P_VALUE'"' >> "${BOARD_DEST}"
-echo OFFSET='"'$OFFSET'"' >> "${BOARD_DEST}"
-echo "" >> "${BOARD_DEST}"
-echo "# filesystem" >> "${BOARD_DEST}"
-echo FSTYPE='"'$FSTYPE'"' >> "${BOARD_DEST}"
-echo "" >> "${BOARD_DEST}"
-echo "# boot config" >> "${BOARD_DEST}"
-echo EXTLINUX='"'$EXTLINUX'"' >> "${BOARD_DEST}"
-echo PETITBOOT='"'$PETITBOOT'"' >> "${BOARD_DEST}"
-echo BOOTINI='"'$BOOTINI'"' >> "${BOARD_DEST}"
-echo BOOTCMD='"'$BOOTCMD'"' >> "${BOARD_DEST}"
-echo "" >> "${BOARD_DEST}"
-echo "# command line" >> "${BOARD_DEST}"
-echo CONSOLE='"'$CONSOLE'"' >> "${BOARD_DEST}"
-echo LOGLEVEL='"'$LOGLEVEL'"' >> "${BOARD_DEST}"
-echo EXTRA='"'$EXTRA'"' >> "${BOARD_DEST}"
-echo "" >> "${BOARD_DEST}"
-echo "# motd" >> "${BOARD_DEST}"
-echo DEFAULT_MOTD='"'$DEFAULT_MOTD'"' >> "${BOARD_DEST}"
+cat <<EOF > "${BOARD_DEST}"
+# architecture
+ARCH="$ARCH"
+ARCH_EXT="$ARCH_EXT"
+CROSS_COMPILE="$CROSS_COMPILE"
+
+# device information
+BOARD="$BOARD"
+SERIES="$SERIES"
+FAMILY="$FAMILY"
+FAMILY_EXT="$FAMILY_EXT"
+DTB="$DTB"
+
+# partition scheme
+GPT="$GPT"
+EFI="$EFI"
+VFAT="$VFAT"
+P_VALUE="$P_VALUE"
+OFFSET="$OFFSET"
+
+# filesystem
+FSTYPE="$FSTYPE"
+
+# boot config
+EXTLINUX="$EXTLINUX"
+PETITBOOT="$PETITBOOT"
+BOOTINI="$BOOTINI"
+BOOTCMD="$BOOTCMD"
+
+# command line
+CONSOLE="$CONSOLE"
+LOGLEVEL="$LOGLEVEL"
+EXTRA="$EXTRA"
+
+# motd
+DEFAULT_MOTD="$DEFAULT_MOTD"
+EOF
 }
 
 files (){
