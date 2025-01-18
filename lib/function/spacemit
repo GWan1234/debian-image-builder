@@ -27,7 +27,8 @@ else
 		rm -f u-boot/board/spacemit/k1-x/k1-x.env
 		echo_bdone
 	else
-		echo -e "${PNK}[${FIN}${RED}failed${FIN}${PNK}]${FIN}"; exit 1
+		echo -e "${PNK}[${FIN}${RED}failed${FIN}${PNK}]${FIN}"
+		exit 1
 	fi
 fi
 }
@@ -58,7 +59,6 @@ cp -f bootinfo_emmc.bin ${PKGNAME}_${PKGVERSION}-${BV}_${ARCH_EXT}/usr/lib/${PKG
 cp -f FSBL.bin ${PKGNAME}_${PKGVERSION}-${BV}_${ARCH_EXT}/usr/lib/${PKGNAME}/
 cp -f fw_dynamic.itb ${PKGNAME}_${PKGVERSION}-${BV}_${ARCH_EXT}/usr/lib/${PKGNAME}/fw_dynamic.bin
 cp -f u-boot.itb ${PKGNAME}_${PKGVERSION}-${BV}_${ARCH_EXT}/usr/lib/${PKGNAME}/u-boot.bin
-#cp -f ../../files/boot/env_k1-x.txt ${PKGNAME}_${PKGVERSION}-${BV}_${ARCH_EXT}/usr/lib/${PKGNAME}/
 }
 
 # STAGE1
@@ -68,23 +68,6 @@ dd if=${OUTPUT}/FSBL.bin of="${IMAGE_LOOP_DEV}" bs=512 seek=1 conv=notrunc
 dd if=${OUTPUT}/FSBL.bin of="${IMAGE_LOOP_DEV}" bs=512 seek=512 conv=notrunc
 dd if=${OUTPUT}/fw_dynamic.bin of="${IMAGE_LOOP_DEV}" bs=512 seek=1280 conv=notrunc
 dd if=${OUTPUT}/u-boot.bin of="${IMAGE_LOOP_DEV}" bs=512 seek=2048 conv=notrunc
-}
-
-env_config (){
-rm -f p1/env_k1-x.txt
-cp -f files/boot/env_k1-x.txt p1/
-if [[ "$P_VALUE" == "p1" ]]; then
-	sed -i "s/^knl_name=.*/knl_name=boot\/Image.itb/" p1/env_k1-x.txt
-	sed -i "s/^ramdisk_name=.*/ramdisk_name=boot\/initrd.gz/" p1/env_k1-x.txt
-	sed -i "s/^dtb_dir=.*/dtb_dir=boot\/spacemit/" p1/env_k1-x.txt
-fi
-if [[ "$P_VALUE" == "p2" ]]; then
-	sed -i "s/^knl_name=.*/knl_name=Image.itb/" p1/env_k1-x.txt
-	sed -i "s/^ramdisk_name=.*/ramdisk_name=initrd.gz/" p1/env_k1-x.txt
-	sed -i "s/^dtb_dir=.*/dtb_dir=spacemit/" p1/env_k1-x.txt
-fi
-sed -i "s/^mmc_rootfstype=.*/mmc_rootfstype=${FSTYPE}/" p1/env_k1-x.txt
-sed -i "s/^partuuid=.*/partuuid=${ROOT_PARTUUID}/" p1/env_k1-x.txt
 }
 
 # STAGE2
