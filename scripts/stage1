@@ -185,7 +185,7 @@ if [[ "$P_VALUE" == "p1" ]]; then
 	if [ $RAM -ne 0 ]; then umount "${IMAGE_FOLDER}"; fi
 	rmdir "${IMAGE_FOLDER}"
 	rmdir p1
-	if [[ "$ENABLE_SHRINK" == "true" ]]; then shrink; fi
+	if [[ "$ENABLE_SHRINK" == "true" ]]; then shrink; else echo -en "Shrink ${PNK}[${FIN}${WHT}disabled${FIN}${PNK}]${FIN}"; fi
 	if [[ `type flash_tool_part` ]] &>/dev/null; then
 		if [ $VERBOSE -eq 1 ]; then flash_tool_part; else flash_tool_part > /dev/null 2>&1; fi
 	fi
@@ -244,7 +244,7 @@ if [[ "$P_VALUE" == "p2" ]]; then
 	if [ $RAM -ne 0 ]; then umount "${IMAGE_FOLDER}"; fi
 	rmdir "${IMAGE_FOLDER}"
 	rmdir p1 p2
-	if [[ "$ENABLE_SHRINK" == "true" ]]; then shrink; fi
+	if [[ "$ENABLE_SHRINK" == "true" ]]; then shrink; else echo -en "Shrink ${PNK}[${FIN}${WHT}disabled${FIN}${PNK}]${FIN}"; fi
 	finish_image
 	rm -f {part-uuid.txt,board.txt,kernel.release}
 	exit 0
