@@ -174,7 +174,7 @@ if [[ "$P_VALUE" == "p1" ]]; then
 	if [ -n "$PROXY" ]; then rm p1/etc/apt/apt.conf.d/30proxy; fi
 	rm p1/etc/dpkg/dpkg.cfg.d/dpkg-unsafe-io
 	if [[ -f "kernel.release" ]]; then source kernel.release; fi
-	if [[ "$FSTYPE" == "ext4" ]]; then e4defrag -c ${P_VALUE}; fi
+	if [ $VERBOSE -eq 1 ]; then e4defrag -c ${P_VALUE}; else e4defrag -c ${P_VALUE} > /dev/null 2>&1; fi
 	if [[ "$EXTLINUX" == "true" ]] && [[ "$EFI" == "false" ]]; then extlinux > /dev/null 2>&1; fi
 	if [[ "$BOOTCMD" == "true" ]] && [[ "$EFI" == "false" ]]; then bootcmd > /dev/null 2>&1; fi
 	umount p1
@@ -185,7 +185,7 @@ if [[ "$P_VALUE" == "p1" ]]; then
 	if [ $RAM -ne 0 ]; then umount "${IMAGE_FOLDER}"; fi
 	rmdir "${IMAGE_FOLDER}"
 	rmdir p1
-	if [[ "$ENABLE_SHRINK" == "true" ]]; then shrink; else echo -en "Shrink ${PNK}[${FIN}${WHT}disabled${FIN}${PNK}]${FIN}"; fi
+	if [[ "$ENABLE_SHRINK" == "true" ]]; then shrink; else echo ""; echo -en "Shrink ${PNK}[${FIN}${WHT}disabled${FIN}${PNK}]${FIN}"; fi
 	if [[ `type flash_tool_part` ]] &>/dev/null; then
 		if [ $VERBOSE -eq 1 ]; then flash_tool_part; else flash_tool_part > /dev/null 2>&1; fi
 	fi
@@ -222,9 +222,15 @@ if [[ "$P_VALUE" == "p2" ]]; then
 	if [ -n "$PROXY" ]; then rm p2/etc/apt/apt.conf.d/30proxy; fi
 	rm p2/etc/dpkg/dpkg.cfg.d/dpkg-unsafe-io
 	if [[ -f "kernel.release" ]]; then source kernel.release; fi
-	if [[ "$FSTYPE" == "ext4" ]]; then e4defrag -c ${P_VALUE}; fi
-	if [[ "$FSTYPE" == "btrfs" ]]; then btrfs filesystem defragment -f -r ${P_VALUE} > /dev/null 2>&1; fi
-	if [[ "$FSTYPE" == "xfs" ]]; then xfs_fsr ${P_VALUE}; fi
+	if [ $VERBOSE -eq 1 ]; then
+		if [[ "$FSTYPE" == "ext4" ]]; then e4defrag -c ${P_VALUE}; fi
+		if [[ "$FSTYPE" == "btrfs" ]]; then btrfs filesystem defragment -f -r ${P_VALUE}; fi
+		if [[ "$FSTYPE" == "xfs" ]]; then xfs_fsr ${P_VALUE}; fi
+	else
+		if [[ "$FSTYPE" == "ext4" ]]; then e4defrag -c ${P_VALUE} > /dev/null 2>&1; fi
+		if [[ "$FSTYPE" == "btrfs" ]]; then btrfs filesystem defragment -f -r ${P_VALUE} > /dev/null 2>&1; fi
+		if [[ "$FSTYPE" == "xfs" ]]; then xfs_fsr ${P_VALUE} > /dev/null 2>&1; fi
+	fi
 	if [[ "$EXTLINUX" == "true" ]] && [[ "$EFI" == "false" ]]; then extlinux > /dev/null 2>&1; fi
 	if [[ "$BOOTCMD" == "true" ]] && [[ "$EFI" == "false" ]]; then bootcmd > /dev/null 2>&1; fi
 	if [[ "$PETITBOOT" == "true" ]] && [[ "$EFI" == "false" ]]; then odroid_bootcmd > /dev/null 2>&1; fi
@@ -244,7 +250,7 @@ if [[ "$P_VALUE" == "p2" ]]; then
 	if [ $RAM -ne 0 ]; then umount "${IMAGE_FOLDER}"; fi
 	rmdir "${IMAGE_FOLDER}"
 	rmdir p1 p2
-	if [[ "$ENABLE_SHRINK" == "true" ]]; then shrink; else echo -en "Shrink ${PNK}[${FIN}${WHT}disabled${FIN}${PNK}]${FIN}"; fi
+	if [[ "$ENABLE_SHRINK" == "true" ]]; then shrink; else echo ""; echo -en "Shrink ${PNK}[${FIN}${WHT}disabled${FIN}${PNK}]${FIN}"; fi
 	finish_image
 	rm -f {part-uuid.txt,board.txt,kernel.release}
 	exit 0
